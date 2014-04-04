@@ -1,0 +1,3 @@
+platform :osx, '10.7'
+pod 'AFNetworking', '1.3.3'
+pod 'AFKissXMLRequestOperation', '0.0.1'
