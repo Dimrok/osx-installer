@@ -26,20 +26,20 @@
 
 - (void)notifyDelegateOfExtractedLength:(NSNumber *)length
 {
-	if ([delegate respondsToSelector:@selector(unarchiver:extractedLength:)])
-		[delegate unarchiver:self extractedLength:[length unsignedLongValue]];
+	if ([self.delegate respondsToSelector:@selector(unarchiver:extractedLength:)])
+		[self.delegate unarchiver:self extractedLength:[length unsignedLongValue]];
 }
 
 - (void)notifyDelegateOfSuccess
 {
-	if ([delegate respondsToSelector:@selector(unarchiverDidFinish:)])
-		[delegate performSelector:@selector(unarchiverDidFinish:) withObject:self];
+	if ([self.delegate respondsToSelector:@selector(unarchiverDidFinish:)])
+		[self.delegate performSelector:@selector(unarchiverDidFinish:) withObject:self];
 }
 
 - (void)notifyDelegateOfFailure
 {
-	if ([delegate respondsToSelector:@selector(unarchiverDidFail:)])
-		[delegate performSelector:@selector(unarchiverDidFail:) withObject:self];
+	if ([self.delegate respondsToSelector:@selector(unarchiverDidFail:)])
+		[self.delegate performSelector:@selector(unarchiverDidFail:) withObject:self];
 }
 
 static NSMutableArray *gUnarchiverImplementations;
