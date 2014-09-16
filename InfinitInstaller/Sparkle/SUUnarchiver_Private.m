@@ -19,12 +19,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[archivePath release];
-	[super dealloc];
-}
-
 + (BOOL)canUnarchivePath:(NSString *)path
 {
 	return NO;

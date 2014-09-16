@@ -15,7 +15,7 @@
 
 + (instancetype)unarchiverForPath:(NSString *)path {
 
-	return [[[self alloc] initWithPath:path] autorelease];
+	return [[self alloc] initWithPath:path];
 }
 
 - (NSString *)archivePath {
