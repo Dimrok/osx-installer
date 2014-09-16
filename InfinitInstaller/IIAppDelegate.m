@@ -7,6 +7,7 @@
 //
 
 #import "IIAppDelegate.h"
+#import "IIMetricsReporter.h"
 #import "SUCodeSigningVerifier.h"
 
 #define INFINIT_BASE_URL @"http://download.infinit.io"
@@ -17,13 +18,77 @@
 #define SKIP_CODE_SIGNATURE_VALIDATION
 
 @implementation IIAppDelegate
+{
+@private
+  NSString* _device_id;
+}
+
+- (id)init
+{
+  if (self = [super init])
+  {
+    _device_id = @"unknown";
+  }
+  return self;
+}
 
 - (void)applicationDidFinishLaunching:(NSNotification*)aNotification
 {
-  NSAssert([SUCodeSigningVerifier hostApplicationIsCodeSigned], @"This installer is not code signed");
-
   [self closeInstallerWindow];
+  [self ensureDeviceId];
+  [IIMetricsReporter sendMetric:INFINIT_METRIC_START_INSTALL];
 
+  [self beginInstall];
+}
+
+- (void)ensureDeviceId
+{
+  NSString* infinit_dir_path = [NSHomeDirectory() stringByAppendingPathComponent:@".infinit"];
+  BOOL have_infinit_dir =
+  [[NSFileManager defaultManager] fileExistsAtPath:infinit_dir_path isDirectory:nil];
+  if (!have_infinit_dir)
+  {
+    [[NSFileManager defaultManager] createDirectoryAtPath:infinit_dir_path
+                              withIntermediateDirectories:NO
+                                               attributes:nil
+                                                    error:nil];
+  }
+  NSString* device_id_path = [infinit_dir_path stringByAppendingPathComponent:@"device.uuid"];
+  BOOL have_device_id = [[NSFileManager defaultManager] fileExistsAtPath:device_id_path
+                                                             isDirectory:nil];
+  BOOL make_device_id = NO;
+  if (have_device_id)
+  {
+    _device_id = [NSString stringWithContentsOfFile:device_id_path
+                                           encoding:NSUTF8StringEncoding
+                                              error:nil];
+    _device_id =
+      [_device_id stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (_device_id.length == 0)
+      make_device_id = YES;
+    else
+      NSLog(@"Read device_id: %@", _device_id);
+  }
+  else
+  {
+    make_device_id = YES;
+  }
+  if (make_device_id)
+  {
+    _device_id = [[NSUUID UUID] UUIDString];
+    [_device_id writeToFile:device_id_path
+                 atomically:YES
+                   encoding:NSUTF8StringEncoding
+                      error:nil];
+    NSLog(@"Made device_id: %@", _device_id);
+  }
+  _device_id =
+    [_device_id stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  [IIMetricsReporter setDeviceId:_device_id];
+}
+
+- (void)beginInstall
+{
   self.status_label.stringValue = @"Checking for latest ...";
 
   [AFKissXMLRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"application/rss+xml"]];
@@ -34,34 +99,34 @@
   [self.client getPath:@"sparkle-cast.xml"
             parameters:nil
                success:^(AFHTTPRequestOperation* operation, id XML)
-  {
+   {
 
-    NSError* error = nil;
-    NSArray* items = [XML nodesForXPath:@"//enclosure" error:&error];
+     NSError* error = nil;
+     NSArray* items = [XML nodesForXPath:@"//enclosure" error:&error];
 
-    NSString* latest_version_url = nil;
-    NSInteger latest_version_number = 0;
+     NSString* latest_version_url = nil;
+     NSInteger latest_version_number = 0;
 
-    for (DDXMLElement* item in items)
-    {
+     for (DDXMLElement* item in items)
+     {
 
-      NSString* version_str = [[item attributeForName:@"sparkle:version"] stringValue];
-      NSInteger version_num =
-        [[version_str stringByReplacingOccurrencesOfString:@"." withString:@""] intValue];
+       NSString* version_str = [[item attributeForName:@"sparkle:version"] stringValue];
+       NSInteger version_num =
+       [[version_str stringByReplacingOccurrencesOfString:@"." withString:@""] intValue];
 
-      if (version_num > latest_version_number)
-      {
-        latest_version_number = version_num;
-        latest_version_url = [[item attributeForName:@"url"] stringValue];
-      }
-    }
+       if (version_num > latest_version_number)
+       {
+         latest_version_number = version_num;
+         latest_version_url = [[item attributeForName:@"url"] stringValue];
+       }
+     }
 
-    [self startDownloadingLatestBuildAtURL:[NSURL URLWithString:latest_version_url]];
-  }
+     [self startDownloadingLatestBuildAtURL:[NSURL URLWithString:latest_version_url]];
+   }
                failure:^(AFHTTPRequestOperation* operation, NSError* error)
-  {
-    [self displayErrorMessage:[error localizedDescription] withTitle:@"Appcast Error"];
-  }];
+   {
+     [self displayErrorMessage:[error localizedDescription] withTitle:@"Appcast Error"];
+   }];
 }
 
 - (void)startDownloadingLatestBuildAtURL:(NSURL*)url
@@ -69,6 +134,7 @@
   NSAssert([url.lastPathComponent hasSuffix:@".dmg"], @"Invalid URL, not a dmg.");
 
   NSLog(@"Downloading %@", url);
+  [IIMetricsReporter sendMetric:INFINIT_METRIC_START_DOWNLOAD];
 
   self.status_label.stringValue =
     [NSString stringWithFormat:@"Downloading %@ ...", url.lastPathComponent];
@@ -97,6 +163,7 @@
   }];
   [download setCompletionBlockWithSuccess:^(AFHTTPRequestOperation* operation, id responseObject)
   {
+    [IIMetricsReporter sendMetric:INFINIT_METRIC_FINISH_DOWNLOAD];
     [self extractDMGArchiveAtPath:local_file_path];
   }
                                   failure:^(AFHTTPRequestOperation* operation, NSError* error)
@@ -153,6 +220,7 @@
 
 - (void)startFinisherProcessWithAppPath:(NSString*)app_path
 {
+  [IIMetricsReporter sendMetric:INFINIT_METRIC_FINISH_INSTALL];
   self.status_label.stringValue = @"Finishing up ...";
 
   NSString* finisher_path =
@@ -163,6 +231,12 @@
   NSArray* arguments = @[pid, app_path];
 
   [NSTask launchedTaskWithLaunchPath:finisher_path arguments:arguments];
+  // Wait for metrics to be sent.
+  [self performSelector:@selector(delayedTerminate) withObject:nil afterDelay:5.0];
+}
+
+- (void)delayedTerminate
+{
   [NSApp terminate:self];
 }
 
