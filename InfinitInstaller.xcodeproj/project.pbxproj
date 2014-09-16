@@ -24,6 +24,8 @@
 		0B3250FC18EB61BD00D0A1CC /* NTSynchronousTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3250FB18EB61BD00D0A1CC /* NTSynchronousTask.m */; };
 		0B3250FF18EB68E900D0A1CC /* SUCodeSigningVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3250FE18EB68E900D0A1CC /* SUCodeSigningVerifier.m */; };
 		1AC14D207D8042D5A2432A0B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B64E0B1C0C94831B14CE84E /* libPods.a */; };
+		83B919DF19C8808C00B08CA2 /* IIMetricsReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B919DE19C8808C00B08CA2 /* IIMetricsReporter.m */; };
+		83B919E819C8A21A00B08CA2 /* Montserrat.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83B919E719C8A21A00B08CA2 /* Montserrat.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +83,9 @@
 		0B3250FD18EB68E900D0A1CC /* SUCodeSigningVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUCodeSigningVerifier.h; sourceTree = "<group>"; };
 		0B3250FE18EB68E900D0A1CC /* SUCodeSigningVerifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SUCodeSigningVerifier.m; sourceTree = "<group>"; };
 		6B64E0B1C0C94831B14CE84E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		83B919DD19C8808C00B08CA2 /* IIMetricsReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIMetricsReporter.h; sourceTree = "<group>"; };
+		83B919DE19C8808C00B08CA2 /* IIMetricsReporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIMetricsReporter.m; sourceTree = "<group>"; };
+		83B919E719C8A21A00B08CA2 /* Montserrat.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Montserrat.ttf; sourceTree = "<group>"; };
 		97AADC1E1CE74601A4B98933 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -149,12 +154,15 @@
 		0B32504918EA031500D0A1CC /* InfinitInstaller */ = {
 			isa = PBXGroup;
 			children = (
+				83B919E619C8A20C00B08CA2 /* Resources */,
 				0B3250F018EB615500D0A1CC /* Sparkle */,
 				0B32507D18EA2EFD00D0A1CC /* Icon.icns */,
 				0B32505518EA031500D0A1CC /* IIAppDelegate.h */,
 				0B32505618EA031500D0A1CC /* IIAppDelegate.m */,
 				0B32505818EA031500D0A1CC /* MainMenu.xib */,
 				0B32504A18EA031500D0A1CC /* Supporting Files */,
+				83B919DD19C8808C00B08CA2 /* IIMetricsReporter.h */,
+				83B919DE19C8808C00B08CA2 /* IIMetricsReporter.m */,
 			);
 			path = InfinitInstaller;
 			sourceTree = "<group>";
@@ -196,6 +204,14 @@
 				0B3250F518EB618200D0A1CC /* SUUnarchiver_Private.m */,
 			);
 			path = Sparkle;
+			sourceTree = "<group>";
+		};
+		83B919E619C8A20C00B08CA2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				83B919E719C8A21A00B08CA2 /* Montserrat.ttf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,7 +266,7 @@
 				ORGANIZATIONNAME = Infinit;
 				TargetAttributes = {
 					0B32503F18EA031500D0A1CC = {
-						DevelopmentTeam = DWZ4KML84P;
+						DevelopmentTeam = 2HV5CQC8MR;
 					};
 				};
 			};
@@ -279,6 +295,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B3250E718EB4F6600D0A1CC /* MainMenu.xib in Resources */,
+				83B919E819C8A21A00B08CA2 /* Montserrat.ttf in Resources */,
 				0B32504E18EA031500D0A1CC /* InfoPlist.strings in Resources */,
 				0B32507E18EA2EFD00D0A1CC /* Icon.icns in Resources */,
 				0B32505418EA031500D0A1CC /* Credits.rtf in Resources */,
@@ -335,6 +352,7 @@
 			files = (
 				0B3250FF18EB68E900D0A1CC /* SUCodeSigningVerifier.m in Sources */,
 				0B3250F918EB618200D0A1CC /* SUUnarchiver.m in Sources */,
+				83B919DF19C8808C00B08CA2 /* IIMetricsReporter.m in Sources */,
 				0B32505718EA031500D0A1CC /* IIAppDelegate.m in Sources */,
 				0B32505018EA031500D0A1CC /* main.m in Sources */,
 				0B3250FC18EB61BD00D0A1CC /* NTSynchronousTask.m in Sources */,
@@ -464,14 +482,14 @@
 			baseConfigurationReference = 97AADC1E1CE74601A4B98933 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "InfinitInstaller/InfinitInstaller-Prefix.pch";
 				INFOPLIST_FILE = "InfinitInstaller/InfinitInstaller-Info.plist";
 				PRODUCT_NAME = Infinit;
-				PROVISIONING_PROFILE = "64FB087B-A136-49D9-9349-99809CDDCFE3";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -481,14 +499,14 @@
 			baseConfigurationReference = 97AADC1E1CE74601A4B98933 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "InfinitInstaller/InfinitInstaller-Prefix.pch";
 				INFOPLIST_FILE = "InfinitInstaller/InfinitInstaller-Info.plist";
 				PRODUCT_NAME = Infinit;
-				PROVISIONING_PROFILE = "64FB087B-A136-49D9-9349-99809CDDCFE3";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -497,7 +515,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "InfinitInstallFinisher/InfinitInstallFinisher-Prefix.pch";
@@ -515,7 +533,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "InfinitInstallFinisher/InfinitInstallFinisher-Prefix.pch";
