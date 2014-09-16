@@ -18,195 +18,176 @@
 
 @implementation IIAppDelegate
 
-@synthesize statusLabel, progressBar, client, unarchiver;
+- (void)applicationDidFinishLaunching:(NSNotification*)aNotification
+{
+  NSAssert([SUCodeSigningVerifier hostApplicationIsCodeSigned], @"This installer is not code signed");
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+  [self closeInstallerWindow];
 
-    NSAssert([SUCodeSigningVerifier hostApplicationIsCodeSigned], @"This installer is not code signed");
-    
-    [self closeInstallerWindow];
-    
-    [statusLabel setStringValue:@"Checking for latest ..."];
-    
-    [AFKissXMLRequestOperation addAcceptableContentTypes:
-     [NSSet setWithObject:@"application/rss+xml"]];
-    
-    client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:INFINIT_BASE_URL]];
-    [client setStringEncoding:NSUTF8StringEncoding];
-    [client registerHTTPOperationClass:[AFKissXMLRequestOperation class]];
-    [client getPath:@"sparkle-cast.xml"
-         parameters:nil
-            success:^(AFHTTPRequestOperation *operation, id XML) {
-    
-                NSError *error = nil;
-                NSArray *items = [XML nodesForXPath:@"//enclosure" error:&error];
-                
-                NSString *latestVersionURL = nil;
-                NSInteger latestVersionNumber = 0;
-                
-                for (DDXMLElement *item in items) {
-                    
-                    NSString *versionString = [[item attributeForName:@"sparkle:version"] stringValue];
-                    NSInteger versionNumber = [[versionString stringByReplacingOccurrencesOfString:@"." withString:@""] intValue];
-                    
-                    if (versionNumber > latestVersionNumber) {
-                        
-                        latestVersionNumber = versionNumber;
-                        latestVersionURL = [[item attributeForName:@"url"] stringValue];
-                    }
-                }
-                
-                [self startDownloadingLatestBuildAtURL:[NSURL URLWithString:latestVersionURL]];
-            }
-            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                
-                [self displayErrorMessage:[error localizedDescription] withTitle:@"Appcast Error"];
-            }];
-}
+  self.status_label.stringValue = @"Checking for latest ...";
 
-- (void)startDownloadingLatestBuildAtURL:(NSURL *)URL {
-    
-    NSAssert([[URL lastPathComponent] hasSuffix:@".dmg"], @"Invalid URL, not a dmg.");
+  [AFKissXMLRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"application/rss+xml"]];
 
-    NSLog(@"Downloading %@", URL);
-    
-    [statusLabel setStringValue:
-     [NSString stringWithFormat:@"Downloading %@ ...", [URL lastPathComponent]]];
-    
-    NSString *uuid = [[NSUUID UUID] UUIDString];
-    NSString *temporaryPath = [NSTemporaryDirectory() stringByAppendingString:uuid];
-    
-    [[NSFileManager defaultManager] createDirectoryAtPath:temporaryPath
-                              withIntermediateDirectories:NO
-                                               attributes:nil
-                                                    error:nil];
-    
-    NSString *localFilePath = [temporaryPath stringByAppendingPathComponent:[URL lastPathComponent]];
-    
-    NSOutputStream *outputStream;
-    outputStream = [NSOutputStream outputStreamToFileAtPath:localFilePath append:NO];
-    
-    NSMutableURLRequest *request;
-    request = [[[NSMutableURLRequest alloc] initWithURL:URL] autorelease];
-    [request setHTTPMethod:@"GET"];
-    
-    AFHTTPRequestOperation *download;
-    download = [[[AFHTTPRequestOperation alloc] initWithRequest:request] autorelease];
-    [download setOutputStream:outputStream];
-    [download setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
-        
-        [progressBar setDoubleValue:((double)totalBytesRead / (double)totalBytesExpectedToRead)];
-    }];
-    [download setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        [self extractDMGArchiveAtPath:localFilePath];
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        [self displayErrorMessage:[error localizedDescription] withTitle:@"Download Error"];
-    }];
-    [download start];
-}
+  self.client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:INFINIT_BASE_URL]];
+  self.client.stringEncoding = NSUTF8StringEncoding;
+  [self.client registerHTTPOperationClass:[AFKissXMLRequestOperation class]];
+  [self.client getPath:@"sparkle-cast.xml"
+            parameters:nil
+               success:^(AFHTTPRequestOperation* operation, id XML)
+  {
 
-- (void)extractDMGArchiveAtPath:(NSString *)filePath {
-    
-    if (!unarchiver) {
-        
-        unarchiver = [[SUDiskImageUnarchiver unarchiverForPath:filePath] retain];
-        [unarchiver setDelegate:self];
-        
-        [statusLabel setStringValue:
-         [NSString stringWithFormat:@"Extracting %@ ...", [filePath lastPathComponent]]];
-        
-        [progressBar setIndeterminate:YES];
-        [progressBar startAnimation:nil];
-        
-        [unarchiver start];
+    NSError* error = nil;
+    NSArray* items = [XML nodesForXPath:@"//enclosure" error:&error];
+
+    NSString* latest_version_url = nil;
+    NSInteger latest_version_number = 0;
+
+    for (DDXMLElement* item in items)
+    {
+
+      NSString* version_str = [[item attributeForName:@"sparkle:version"] stringValue];
+      NSInteger version_num =
+        [[version_str stringByReplacingOccurrencesOfString:@"." withString:@""] intValue];
+
+      if (version_num > latest_version_number)
+      {
+        latest_version_number = version_num;
+        latest_version_url = [[item attributeForName:@"url"] stringValue];
+      }
     }
+
+    [self startDownloadingLatestBuildAtURL:[NSURL URLWithString:latest_version_url]];
+  }
+               failure:^(AFHTTPRequestOperation* operation, NSError* error)
+  {
+    [self displayErrorMessage:[error localizedDescription] withTitle:@"Appcast Error"];
+  }];
 }
 
-- (void)unarchiverDidFinish:(SUUnarchiver *)unarchiver_ {
+- (void)startDownloadingLatestBuildAtURL:(NSURL*)url
+{
+  NSAssert([url.lastPathComponent hasSuffix:@".dmg"], @"Invalid URL, not a dmg.");
 
-    NSString *archiveDirectory = [[unarchiver archivePath] stringByDeletingLastPathComponent];
-    NSString *appPath = [archiveDirectory stringByAppendingPathComponent:INFINIT_APP_NAME];
-    
+  NSLog(@"Downloading %@", url);
+
+  self.status_label.stringValue =
+    [NSString stringWithFormat:@"Downloading %@ ...", url.lastPathComponent];
+
+  NSString* uuid = [[NSUUID UUID] UUIDString];
+  NSString* temp_path = [NSTemporaryDirectory() stringByAppendingString:uuid];
+
+  [[NSFileManager defaultManager] createDirectoryAtPath:temp_path
+                            withIntermediateDirectories:NO
+                                             attributes:nil
+                                                  error:nil];
+
+  NSString* local_file_path = [temp_path stringByAppendingPathComponent:url.lastPathComponent];
+
+  NSOutputStream* output_stream =
+    [NSOutputStream outputStreamToFileAtPath:local_file_path append:NO];
+
+  NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:url];
+  request.HTTPMethod = @"GET";
+
+  AFHTTPRequestOperation* download = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+  download.outputStream = output_stream;
+  [download setDownloadProgressBlock:^(NSUInteger bytes_read, long long total_bytes_read, long long total_bytes_expected)
+  {
+    self.progress_bar.doubleValue = (double)total_bytes_read / (double)total_bytes_expected;
+  }];
+  [download setCompletionBlockWithSuccess:^(AFHTTPRequestOperation* operation, id responseObject)
+  {
+    [self extractDMGArchiveAtPath:local_file_path];
+  }
+                                  failure:^(AFHTTPRequestOperation* operation, NSError* error)
+  {
+    [self displayErrorMessage:error.localizedDescription withTitle:@"Download Error"];
+  }];
+  [download start];
+}
+
+- (void)extractDMGArchiveAtPath:(NSString*)file_path
+{
+  if (!self.unarchiver)
+  {
+    self.unarchiver = [SUDiskImageUnarchiver unarchiverForPath:file_path];
+    self.unarchiver.delegate = self;
+
+    self.status_label.stringValue =
+      [NSString stringWithFormat:@"Extracting %@ ...", file_path.lastPathComponent];
+
+    self.progress_bar.indeterminate = YES;
+    [self.progress_bar startAnimation:nil];
+
+    [self.unarchiver start];
+  }
+}
+
+- (void)unarchiverDidFinish:(SUUnarchiver*)unarchiver_
+{
+  NSString* archive_dir = [self.unarchiver.archivePath stringByDeletingLastPathComponent];
+  NSString* app_path = [archive_dir stringByAppendingPathComponent:INFINIT_APP_NAME];
+
 #ifdef SKIP_CODE_SIGNATURE_VALIDATION
-    BOOL hasValidCodeSigning = YES;
+  BOOL valid_codesign = YES;
 #else
-    [statusLabel setStringValue:
-     [NSString stringWithFormat:@"Verifying %@ ...", INFINIT_APP_NAME]];
-    NSLog(@"Verifying code signature on %@", appPath);
-    NSError *error = nil;
-    BOOL hasValidCodeSigning = [SUCodeSigningVerifier codeSignatureIsValidAtPath:appPath error:&error];
-    if (!hasValidCodeSigning) {
-        
-        [self displayErrorMessage:[error localizedDescription] withTitle:@"Verification Error"];
-    }
+  self.status_label.stringValue = [NSString stringWithFormat:@"Verifying %@ ...", INFINIT_APP_NAME];
+  NSLog(@"Verifying code signature on %@", app_path);
+  NSError* error = nil;
+  BOOL valid_codesign = [SUCodeSigningVerifier codeSignatureIsValidAtPath:app_path error:&error];
+  if (!valid_codesign)
+  {
+    [self displayErrorMessage:error.localizedDescription withTitle:@"Verification Error"];
+  }
 #endif
-    if (hasValidCodeSigning) {
-        
-        [self startFinisherProcessWithAppPath:appPath];
-    }
+  if (valid_codesign)
+  {
+    [self startFinisherProcessWithAppPath:app_path];
+  }
 }
 
-- (void)unarchiverDidFail:(SUUnarchiver *)unarchiver_ {
-    
-    [self displayErrorMessage:@"Unable to extract DMG file." withTitle:@"Extract Error"];
+- (void)unarchiverDidFail:(SUUnarchiver*)unarchiver_
+{
+  [self displayErrorMessage:@"Unable to extract DMG file." withTitle:@"Extract Error"];
 }
 
-- (void)startFinisherProcessWithAppPath:(NSString *)appPath {
-    
-    [statusLabel setStringValue:@"Finishing up ..."];
-    
-    NSString *finisherPath;
-    finisherPath = [[[NSBundle mainBundle] sharedSupportPath]
-                    stringByAppendingPathComponent:INFINIT_FINISHER_PATH];
+- (void)startFinisherProcessWithAppPath:(NSString*)app_path
+{
+  self.status_label.stringValue = @"Finishing up ...";
 
-    NSString *processID;
-    processID = [NSString stringWithFormat:@"%d",
-                 [[NSProcessInfo processInfo] processIdentifier]];
-    
-    NSArray *arguments;
-    arguments = [NSArray arrayWithObjects:processID, appPath, nil];
-    
-    NSTask *finisher;
-    finisher = [NSTask launchedTaskWithLaunchPath:finisherPath
-                                        arguments:arguments];
-    [NSApp terminate:self];
+  NSString* finisher_path =
+    [[[NSBundle mainBundle] sharedSupportPath] stringByAppendingPathComponent:INFINIT_FINISHER_PATH];
+
+  NSString* pid = [NSString stringWithFormat:@"%d", [[NSProcessInfo processInfo] processIdentifier]];
+
+  NSArray* arguments = @[pid, app_path];
+
+  [NSTask launchedTaskWithLaunchPath:finisher_path arguments:arguments];
+  [NSApp terminate:self];
 }
 
-- (void)closeInstallerWindow {
-    
-    NSAppleScript *scriptObject = [[NSAppleScript alloc] initWithSource:
-                                   @"\
-                                   tell application \"Finder\"\n\
-                                        close Finder window \"Infinit Installer\"\n\
-                                   end tell"];
-    [scriptObject executeAndReturnError:nil];
-    [scriptObject release];
+- (void)closeInstallerWindow
+{
+  NSAppleScript* script =
+    [[NSAppleScript alloc] initWithSource:@"\
+      tell application \"Finder\"\n\
+      close Finder window \"Infinit Installer\"\n\
+      end tell"];
+  [script executeAndReturnError:nil];
 }
 
-- (void)displayErrorMessage:(NSString *)message withTitle:(NSString *)title {
+- (void)displayErrorMessage:(NSString*)message
+                  withTitle:(NSString*)title
+{
+  NSString* error_msg = [NSString stringWithFormat:@"%@ - %@", title, message];
+  self.status_label.stringValue = error_msg;
 
-    NSString *errorMessage;
-    errorMessage = [NSString stringWithFormat:@"%@ - %@",
-                    title, message];
-    [statusLabel setStringValue:errorMessage];
-    
-    if ([progressBar isIndeterminate]) {
-
-        [progressBar stopAnimation:nil];
-        [progressBar setIndeterminate:NO];
-        [progressBar setDoubleValue:1.0];
-    }
-}
-
-- (void)dealloc {
-    
-    [client release];
-    [unarchiver release];
-    
-    [super dealloc];
+  if (self.progress_bar.isIndeterminate)
+  {
+    [self.progress_bar stopAnimation:nil];
+    self.progress_bar.indeterminate = NO;
+    self.progress_bar.doubleValue = 1.0;
+  }
 }
 
 @end

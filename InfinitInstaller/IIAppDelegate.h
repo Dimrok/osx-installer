@@ -13,10 +13,10 @@
 
 @interface IIAppDelegate : NSObject <NSApplicationDelegate, SUUnarchiverDelegate>
 
-@property (assign, nonatomic) IBOutlet NSWindow *window;
-@property (assign, nonatomic) IBOutlet NSTextField *statusLabel;
-@property (assign, nonatomic) IBOutlet NSProgressIndicator *progressBar;
-@property (retain, nonatomic) AFHTTPClient *client;
-@property (retain, nonatomic) SUDiskImageUnarchiver *unarchiver;
+@property (nonatomic, weak) IBOutlet NSWindow* window;
+@property (nonatomic, weak) IBOutlet NSTextField* status_label;
+@property (nonatomic, weak) IBOutlet NSProgressIndicator* progress_bar;
+@property (nonatomic, strong) AFHTTPClient* client;
+@property (nonatomic, strong) SUDiskImageUnarchiver* unarchiver;
 
 @end
