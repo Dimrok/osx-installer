@@ -14,6 +14,7 @@
 #define INFINIT_ERROR_DOMAIN @"com.infinit.io.error"
 #define INFINIT_APP_NAME @"Infinit.app"
 #define INFINIT_FINISHER_PATH @"InfinitInstallFinisher.app/Contents/MacOS/InfinitInstallFinisher"
+#define INFINIT_BUNDLE_IDENTIFIER @"io.infinit.InfinitApplication"
 
 #define SKIP_CODE_SIGNATURE_VALIDATION
 
@@ -21,6 +22,7 @@
 {
 @private
   NSString* _device_id;
+  BOOL _started_install;
 }
 
 - (id)init
@@ -28,8 +30,17 @@
   if (self = [super init])
   {
     _device_id = @"unknown";
+    [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
+                                                           selector:@selector(anApplicationTerminated:)
+                                                               name:NSWorkspaceDidTerminateApplicationNotification
+                                                             object:nil];
   }
   return self;
+}
+
+- (void)dealloc
+{
+  [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification*)aNotification
@@ -38,7 +49,54 @@
   [self ensureDeviceId];
   [IIMetricsReporter sendMetric:INFINIT_METRIC_START_INSTALL];
 
-  [self beginInstall];
+  self.pacman.animate = YES;
+  self.progress_bar.indeterminate = YES;
+  [self.progress_bar startAnimation:nil];
+
+  BOOL running_infinit = NO;
+
+  for (NSRunningApplication* app in [[NSWorkspace sharedWorkspace] runningApplications])
+  {
+    if ([app.bundleIdentifier isEqualToString:INFINIT_BUNDLE_IDENTIFIER])
+    {
+      NSLog(@"Found running Infinit, will terminate");
+      self.status_label.stringValue = NSLocalizedString(@"Quitting existing Infinit...", nil);
+      running_infinit = YES;
+      [app terminate];
+      [self performSelector:@selector(ensureOldInfinitKilled:) withObject:app afterDelay:10.0];
+    }
+  }
+  if (!running_infinit)
+    [self beginInstall];
+}
+
+- (void)anApplicationTerminated:(NSNotification*)notification
+{
+  NSDictionary* user_info = notification.userInfo;
+  NSRunningApplication* app = [user_info valueForKey:@"NSWorkspaceApplicationKey"];
+  if ([[app bundleIdentifier] isEqualToString:INFINIT_BUNDLE_IDENTIFIER])
+  {
+    NSLog(@"Got notification for termination of existing Infinit");
+    [NSObject cancelPreviousPerformRequestsWithTarget:self
+                                             selector:@selector(ensureOldInfinitKilled:)
+                                               object:app];
+    [self beginInstall];
+  }
+}
+
+- (void)ensureOldInfinitKilled:(NSRunningApplication*)app
+{
+  if (app.terminated)
+  {
+    NSLog(@"Exisiting Infinit already terminated");
+    [self beginInstall];
+  }
+  else
+  {
+    NSLog(@"Force terminating exiting Infinit");
+    [app forceTerminate];
+    [self beginInstall];
+  }
 }
 
 - (void)ensureDeviceId
@@ -89,7 +147,10 @@
 
 - (void)beginInstall
 {
-  self.status_label.stringValue = @"Checking for latest ...";
+  if (_started_install)
+    return;
+  _started_install = YES;
+  self.status_label.stringValue = NSLocalizedString(@"Checking for latest...", nil);
 
   [AFKissXMLRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"application/rss+xml"]];
 
@@ -136,8 +197,10 @@
   NSLog(@"Downloading %@", url);
   [IIMetricsReporter sendMetric:INFINIT_METRIC_START_DOWNLOAD];
 
+  NSString* app_name = [url.lastPathComponent stringByDeletingPathExtension];
+
   self.status_label.stringValue =
-    [NSString stringWithFormat:@"Downloading %@ ...", url.lastPathComponent];
+    [NSString stringWithFormat:@"%@ %@...", NSLocalizedString(@"Downloading", nil), app_name];
 
   NSString* uuid = [[NSUUID UUID] UUIDString];
   NSString* temp_path = [NSTemporaryDirectory() stringByAppendingString:uuid];
@@ -170,6 +233,9 @@
   {
     [self displayErrorMessage:error.localizedDescription withTitle:@"Download Error"];
   }];
+  [self.progress_bar stopAnimation:nil];
+  self.progress_bar.indeterminate = NO;
+  self.progress_bar.doubleValue = 0.0;
   [download start];
 }
 
@@ -180,8 +246,10 @@
     self.unarchiver = [SUDiskImageUnarchiver unarchiverForPath:file_path];
     self.unarchiver.delegate = self;
 
+    NSString* app_name = [file_path.lastPathComponent stringByDeletingPathExtension];
+
     self.status_label.stringValue =
-      [NSString stringWithFormat:@"Extracting %@ ...", file_path.lastPathComponent];
+      [NSString stringWithFormat:@"%@ %@...", NSLocalizedString(@"Extracting", nil), app_name];
 
     self.progress_bar.indeterminate = YES;
     [self.progress_bar startAnimation:nil];
@@ -198,13 +266,16 @@
 #ifdef SKIP_CODE_SIGNATURE_VALIDATION
   BOOL valid_codesign = YES;
 #else
-  self.status_label.stringValue = [NSString stringWithFormat:@"Verifying %@ ...", INFINIT_APP_NAME];
+  NSString* app_name = [INFINIT_APP_NAME stringByDeletingPathExtension];
+  self.status_label.stringValue =
+    [NSString stringWithFormat:@"%@ %@...", NSLocalizedString(@"Verifying", nil), app_name];
   NSLog(@"Verifying code signature on %@", app_path);
   NSError* error = nil;
   BOOL valid_codesign = [SUCodeSigningVerifier codeSignatureIsValidAtPath:app_path error:&error];
   if (!valid_codesign)
   {
-    [self displayErrorMessage:error.localizedDescription withTitle:@"Verification Error"];
+    [self displayErrorMessage:error.localizedDescription
+                    withTitle:NSLocalizedString(@"Verification Error", nil)];
   }
 #endif
   if (valid_codesign)
@@ -215,13 +286,14 @@
 
 - (void)unarchiverDidFail:(SUUnarchiver*)unarchiver_
 {
-  [self displayErrorMessage:@"Unable to extract DMG file." withTitle:@"Extract Error"];
+  [self displayErrorMessage:NSLocalizedString(@"Unable to extract DMG file.", nil)
+                  withTitle:NSLocalizedString(@"Extract Error", nil)];
 }
 
 - (void)startFinisherProcessWithAppPath:(NSString*)app_path
 {
   [IIMetricsReporter sendMetric:INFINIT_METRIC_FINISH_INSTALL];
-  self.status_label.stringValue = @"Finishing up ...";
+  self.status_label.stringValue = NSLocalizedString(@"Finishing up...", nil);
 
   NSString* finisher_path =
     [[[NSBundle mainBundle] sharedSupportPath] stringByAppendingPathComponent:INFINIT_FINISHER_PATH];
@@ -232,12 +304,7 @@
 
   [NSTask launchedTaskWithLaunchPath:finisher_path arguments:arguments];
   // Wait for metrics to be sent.
-  [self performSelector:@selector(delayedTerminate) withObject:nil afterDelay:5.0];
-}
-
-- (void)delayedTerminate
-{
-  [NSApp terminate:self];
+  [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:5.0];
 }
 
 - (void)closeInstallerWindow
