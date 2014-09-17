@@ -18,6 +18,7 @@
         </customObject>
         <customObject id="Voe-Tx-rLC" customClass="IIAppDelegate">
             <connections>
+                <outlet property="pacman" destination="ECn-xO-Xds" id="EB7-eB-tOr"/>
                 <outlet property="progress_bar" destination="tcw-G1-TBT" id="aTa-UT-6vK"/>
                 <outlet property="status_label" destination="fr0-cD-nxh" id="5wK-Sa-dBp"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
@@ -44,28 +45,45 @@
             </items>
         </menu>
         <window title="Install Infinit" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
-            <windowStyleMask key="styleMask" titled="YES"/>
-            <rect key="contentRect" x="517" y="410" width="480" height="120"/>
+            <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES"/>
+            <rect key="contentRect" x="517" y="410" width="286" height="445"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
-            <value key="minSize" type="size" width="480" height="120"/>
-            <value key="maxSize" type="size" width="480" height="120"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="120"/>
+                <rect key="frame" x="0.0" y="0.0" width="286" height="445"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fr0-cD-nxh">
-                        <rect key="frame" x="18" y="52" width="444" height="48"/>
-                        <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Status..." id="wso-gA-SXR">
-                            <font key="font" size="13" name="HelveticaNeue-Light"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <rect key="frame" x="31" y="206" width="224" height="20"/>
+                        <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="STATUS..." id="wso-gA-SXR">
+                            <font key="font" size="13" name="Montserrat-Regular"/>
+                            <color key="textColor" red="0.31764705882352939" green="0.31764705882352939" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                     <progressIndicator fixedFrame="YES" maxValue="1" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="tcw-G1-TBT">
-                        <rect key="frame" x="20" y="25" width="440" height="20"/>
+                        <rect key="frame" x="33" y="187" width="220" height="20"/>
                     </progressIndicator>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c3G-uT-moB">
+                        <rect key="frame" x="49" y="307" width="188" height="93"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="logo" id="0n2-fY-kvD"/>
+                    </imageView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VM9-Wr-HmS">
+                        <rect key="frame" x="39" y="282" width="209" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="The smartest way to send your files" id="9M2-AG-hLW">
+                            <font key="font" size="13" name="Helvetica-Light"/>
+                            <color key="textColor" red="0.31764705882352939" green="0.31764705882352939" blue="0.28235294117647058" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ECn-xO-Xds" customClass="IIPacman">
+                        <rect key="frame" x="131" y="115" width="25" height="25"/>
+                    </customView>
                 </subviews>
             </view>
+            <point key="canvasLocation" x="260" y="385.5"/>
         </window>
     </objects>
+    <resources>
+        <image name="logo" width="188" height="104"/>
+    </resources>
 </document>
