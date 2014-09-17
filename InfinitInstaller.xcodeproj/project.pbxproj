@@ -25,7 +25,10 @@
 		0B3250FF18EB68E900D0A1CC /* SUCodeSigningVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3250FE18EB68E900D0A1CC /* SUCodeSigningVerifier.m */; };
 		1AC14D207D8042D5A2432A0B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B64E0B1C0C94831B14CE84E /* libPods.a */; };
 		83B919DF19C8808C00B08CA2 /* IIMetricsReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B919DE19C8808C00B08CA2 /* IIMetricsReporter.m */; };
-		83B919E819C8A21A00B08CA2 /* Montserrat.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83B919E719C8A21A00B08CA2 /* Montserrat.ttf */; };
+		83B919EB19C9688400B08CA2 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 83B919E919C9688400B08CA2 /* logo.png */; };
+		83B919EC19C9688400B08CA2 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83B919EA19C9688400B08CA2 /* logo@2x.png */; };
+		83B919F219C96B2B00B08CA2 /* IIPacman.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B919F119C96B2B00B08CA2 /* IIPacman.m */; };
+		83B919F719C9952100B08CA2 /* Montserrat.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 83B919E719C8A21A00B08CA2 /* Montserrat.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +51,16 @@
 				0B3250EF18EB50C400D0A1CC /* InfinitInstallFinisher.app in Copy InfinitInstallFinisher.app */,
 			);
 			name = "Copy InfinitInstallFinisher.app";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		83B919F619C9951000B08CA2 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Fonts;
+			dstSubfolderSpec = 7;
+			files = (
+				83B919F719C9952100B08CA2 /* Montserrat.ttf in CopyFiles */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -86,6 +99,10 @@
 		83B919DD19C8808C00B08CA2 /* IIMetricsReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIMetricsReporter.h; sourceTree = "<group>"; };
 		83B919DE19C8808C00B08CA2 /* IIMetricsReporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIMetricsReporter.m; sourceTree = "<group>"; };
 		83B919E719C8A21A00B08CA2 /* Montserrat.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Montserrat.ttf; sourceTree = "<group>"; };
+		83B919E919C9688400B08CA2 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
+		83B919EA19C9688400B08CA2 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
+		83B919F019C96B2B00B08CA2 /* IIPacman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIPacman.h; sourceTree = "<group>"; };
+		83B919F119C96B2B00B08CA2 /* IIPacman.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIPacman.m; sourceTree = "<group>"; };
 		97AADC1E1CE74601A4B98933 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -155,14 +172,14 @@
 			isa = PBXGroup;
 			children = (
 				83B919E619C8A20C00B08CA2 /* Resources */,
+				83B919ED19C96ADC00B08CA2 /* Metrics */,
 				0B3250F018EB615500D0A1CC /* Sparkle */,
+				83B919EF19C96AFA00B08CA2 /* Pacman */,
 				0B32507D18EA2EFD00D0A1CC /* Icon.icns */,
 				0B32505518EA031500D0A1CC /* IIAppDelegate.h */,
 				0B32505618EA031500D0A1CC /* IIAppDelegate.m */,
 				0B32505818EA031500D0A1CC /* MainMenu.xib */,
 				0B32504A18EA031500D0A1CC /* Supporting Files */,
-				83B919DD19C8808C00B08CA2 /* IIMetricsReporter.h */,
-				83B919DE19C8808C00B08CA2 /* IIMetricsReporter.m */,
 			);
 			path = InfinitInstaller;
 			sourceTree = "<group>";
@@ -209,9 +226,29 @@
 		83B919E619C8A20C00B08CA2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				83B919E919C9688400B08CA2 /* logo.png */,
+				83B919EA19C9688400B08CA2 /* logo@2x.png */,
 				83B919E719C8A21A00B08CA2 /* Montserrat.ttf */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		83B919ED19C96ADC00B08CA2 /* Metrics */ = {
+			isa = PBXGroup;
+			children = (
+				83B919DD19C8808C00B08CA2 /* IIMetricsReporter.h */,
+				83B919DE19C8808C00B08CA2 /* IIMetricsReporter.m */,
+			);
+			name = Metrics;
+			sourceTree = "<group>";
+		};
+		83B919EF19C96AFA00B08CA2 /* Pacman */ = {
+			isa = PBXGroup;
+			children = (
+				83B919F019C96B2B00B08CA2 /* IIPacman.h */,
+				83B919F119C96B2B00B08CA2 /* IIPacman.m */,
+			);
+			name = Pacman;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -225,6 +262,7 @@
 				0B32503C18EA031500D0A1CC /* Sources */,
 				0B32503D18EA031500D0A1CC /* Frameworks */,
 				0B32503E18EA031500D0A1CC /* Resources */,
+				83B919F619C9951000B08CA2 /* CopyFiles */,
 				0B3250EE18EB50B500D0A1CC /* Copy InfinitInstallFinisher.app */,
 				CF8D222DAFEB4A34B67BD0B4 /* Copy Pods Resources */,
 			);
@@ -295,8 +333,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B3250E718EB4F6600D0A1CC /* MainMenu.xib in Resources */,
-				83B919E819C8A21A00B08CA2 /* Montserrat.ttf in Resources */,
+				83B919EB19C9688400B08CA2 /* logo.png in Resources */,
 				0B32504E18EA031500D0A1CC /* InfoPlist.strings in Resources */,
+				83B919EC19C9688400B08CA2 /* logo@2x.png in Resources */,
 				0B32507E18EA2EFD00D0A1CC /* Icon.icns in Resources */,
 				0B32505418EA031500D0A1CC /* Credits.rtf in Resources */,
 			);
@@ -358,6 +397,7 @@
 				0B3250FC18EB61BD00D0A1CC /* NTSynchronousTask.m in Sources */,
 				0B3250F818EB618200D0A1CC /* SUUnarchiver_Private.m in Sources */,
 				0B3250F318EB615500D0A1CC /* SUDiskImageUnarchiver.m in Sources */,
+				83B919F219C96B2B00B08CA2 /* IIPacman.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
