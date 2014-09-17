@@ -28,7 +28,6 @@
 		83B919EB19C9688400B08CA2 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 83B919E919C9688400B08CA2 /* logo.png */; };
 		83B919EC19C9688400B08CA2 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83B919EA19C9688400B08CA2 /* logo@2x.png */; };
 		83B919F219C96B2B00B08CA2 /* IIPacman.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B919F119C96B2B00B08CA2 /* IIPacman.m */; };
-		83B919F719C9952100B08CA2 /* Montserrat.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 83B919E719C8A21A00B08CA2 /* Montserrat.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,16 +50,6 @@
 				0B3250EF18EB50C400D0A1CC /* InfinitInstallFinisher.app in Copy InfinitInstallFinisher.app */,
 			);
 			name = "Copy InfinitInstallFinisher.app";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		83B919F619C9951000B08CA2 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = Fonts;
-			dstSubfolderSpec = 7;
-			files = (
-				83B919F719C9952100B08CA2 /* Montserrat.ttf in CopyFiles */,
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -98,7 +87,6 @@
 		6B64E0B1C0C94831B14CE84E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		83B919DD19C8808C00B08CA2 /* IIMetricsReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIMetricsReporter.h; sourceTree = "<group>"; };
 		83B919DE19C8808C00B08CA2 /* IIMetricsReporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIMetricsReporter.m; sourceTree = "<group>"; };
-		83B919E719C8A21A00B08CA2 /* Montserrat.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Montserrat.ttf; sourceTree = "<group>"; };
 		83B919E919C9688400B08CA2 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		83B919EA19C9688400B08CA2 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		83B919F019C96B2B00B08CA2 /* IIPacman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIPacman.h; sourceTree = "<group>"; };
@@ -228,7 +216,6 @@
 			children = (
 				83B919E919C9688400B08CA2 /* logo.png */,
 				83B919EA19C9688400B08CA2 /* logo@2x.png */,
-				83B919E719C8A21A00B08CA2 /* Montserrat.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -262,7 +249,6 @@
 				0B32503C18EA031500D0A1CC /* Sources */,
 				0B32503D18EA031500D0A1CC /* Frameworks */,
 				0B32503E18EA031500D0A1CC /* Resources */,
-				83B919F619C9951000B08CA2 /* CopyFiles */,
 				0B3250EE18EB50B500D0A1CC /* Copy InfinitInstallFinisher.app */,
 				CF8D222DAFEB4A34B67BD0B4 /* Copy Pods Resources */,
 			);
@@ -565,6 +551,7 @@
 				);
 				INFOPLIST_FILE = "InfinitInstallFinisher/InfinitInstallFinisher-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -579,6 +566,7 @@
 				GCC_PREFIX_HEADER = "InfinitInstallFinisher/InfinitInstallFinisher-Prefix.pch";
 				INFOPLIST_FILE = "InfinitInstallFinisher/InfinitInstallFinisher-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
