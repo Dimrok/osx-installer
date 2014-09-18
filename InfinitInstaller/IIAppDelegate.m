@@ -22,7 +22,7 @@
 {
 @private
   NSString* _device_id;
-  BOOL _started_install;
+  NSRunningApplication* _running_infinit;
 }
 
 - (id)init
@@ -54,21 +54,20 @@
   self.progress_bar.indeterminate = YES;
   [self.progress_bar startAnimation:nil];
 
-  BOOL running_infinit = NO;
+  _running_infinit = nil;
 
   for (NSRunningApplication* app in [[NSWorkspace sharedWorkspace] runningApplications])
   {
-    if ([app.bundleIdentifier isEqualToString:INFINIT_BUNDLE_IDENTIFIER])
+    if ([app.bundleIdentifier isEqualToString:INFINIT_BUNDLE_IDENTIFIER] &&
+        ![app isEqual:[NSRunningApplication currentApplication]])
     {
       NSLog(@"Found running Infinit, will terminate");
       self.status_label.stringValue = NSLocalizedString(@"Quitting existing Infinit...", nil);
-      running_infinit = YES;
+      _running_infinit = app;
       [app terminate];
-      [self performSelector:@selector(ensureOldInfinitKilled:) withObject:app afterDelay:10.0];
     }
   }
-  if (!running_infinit)
-    [self beginInstall];
+  [self beginInstall];
 }
 
 - (void)anApplicationTerminated:(NSNotification*)notification
@@ -81,7 +80,6 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:self
                                              selector:@selector(ensureOldInfinitKilled:)
                                                object:app];
-    [self beginInstall];
   }
 }
 
@@ -90,13 +88,11 @@
   if (app.terminated)
   {
     NSLog(@"Exisiting Infinit already terminated");
-    [self beginInstall];
   }
   else
   {
     NSLog(@"Force terminating exiting Infinit");
     [app forceTerminate];
-    [self beginInstall];
   }
 }
 
@@ -148,9 +144,6 @@
 
 - (void)beginInstall
 {
-  if (_started_install)
-    return;
-  _started_install = YES;
   self.status_label.stringValue = NSLocalizedString(@"Checking for latest...", nil);
 
   [AFKissXMLRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"application/rss+xml"]];
@@ -227,6 +220,8 @@
   }];
   [download setCompletionBlockWithSuccess:^(AFHTTPRequestOperation* operation, id responseObject)
   {
+    if (_running_infinit)
+      [self ensureOldInfinitKilled:_running_infinit];
     [IIMetricsReporter sendMetric:INFINIT_METRIC_FINISH_DOWNLOAD];
     [self extractDMGArchiveAtPath:local_file_path];
   }
