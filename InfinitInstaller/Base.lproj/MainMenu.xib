@@ -54,13 +54,13 @@
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fr0-cD-nxh">
                         <rect key="frame" x="31" y="206" width="224" height="20"/>
-                        <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Status..." id="wso-gA-SXR">
+                        <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Downloading..." id="wso-gA-SXR">
                             <font key="font" size="13" name="HelveticaNeue"/>
                             <color key="textColor" red="0.31764705882352939" green="0.31764705882352939" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <progressIndicator fixedFrame="YES" maxValue="1" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="tcw-G1-TBT">
+                    <progressIndicator fixedFrame="YES" maxValue="1" displayedWhenStopped="NO" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="tcw-G1-TBT">
                         <rect key="frame" x="33" y="182" width="220" height="20"/>
                     </progressIndicator>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c3G-uT-moB">
