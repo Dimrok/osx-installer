@@ -11,10 +11,10 @@
 #import <AFNetworking/AFNetworking.h>
 
 #define INFINIT_METRICS_PROTOCOL @"http"
-//#define INFINIT_METRICS_HOST @"metrics.9.0.api.production.infinit.io"
-//#define INFINIT_METRICS_PORT 80
-#define INFINIT_METRICS_HOST @"127.0.0.1"
-#define INFINIT_METRICS_PORT 8282
+#define INFINIT_METRICS_HOST @"metrics.9.0.api.production.infinit.io"
+#define INFINIT_METRICS_PORT 80
+//#define INFINIT_METRICS_HOST @"127.0.0.1"
+//#define INFINIT_METRICS_PORT 8282
 #define INFINIT_METRICS_COLLECTION @"users"
 
 static IIMetricsReporter* _instance = nil;
