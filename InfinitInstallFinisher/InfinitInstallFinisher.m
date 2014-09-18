@@ -17,18 +17,20 @@
   NSString* _app_path;
 }
 
-- (id)initWithParentProcessID:(pid_t)ppid installLocation:(NSString*)path;
+- (id)initWithParentProcessID:(pid_t)ppid
+              installLocation:(NSString*)install_path;
 
 @end
 
 @implementation InfinitTerminationListener
 
-- (id)initWithParentProcessID:(pid_t)ppid installLocation:(NSString*)path
+- (id)initWithParentProcessID:(pid_t)ppid
+              installLocation:(NSString*)install_path
 {
   if ((self = [super init]))
   {
     _parent_pid = ppid;
-    _app_path = [path copy];
+    _app_path = [install_path copy];
 
     BOOL already_terminated = (getppid() == 1); // ppid is launchd (1) => parent terminated already
 
@@ -56,8 +58,8 @@
     [self finishInstallationAndLaunchInfinit];
 }
 
-- (void)finishInstallationAndLaunchInfinit {
-
+- (void)finishInstallationAndLaunchInfinit
+{
   NSLog(@"Parent process (%d) has quit.", _parent_pid);
   NSLog(@"Finishing Installation of: %@", _app_path);
 
@@ -71,7 +73,38 @@
 
   [[NSWorkspace sharedWorkspace] launchApplication:INFINIT_APP_PATH];
 
-  [NSApp terminate:nil];
+  BOOL mounted_dmg = NO;
+
+  NSArray* keys = [NSArray arrayWithObjects:NSURLVolumeNameKey, NSURLVolumeIsRemovableKey, nil];
+  NSArray* urls =
+  [[NSFileManager defaultManager] mountedVolumeURLsIncludingResourceValuesForKeys:keys options:0];
+  for (NSURL* url in urls)
+  {
+    NSError* error;
+    NSNumber* is_removable;
+    NSString* volume_name;
+    [url getResourceValue:&is_removable forKey:NSURLVolumeIsRemovableKey error:&error];
+    if (is_removable.boolValue)
+    {
+      [url getResourceValue:&volume_name forKey:NSURLVolumeNameKey error:&error];
+      if ([volume_name isEqualToString:@"Infinit"])
+        mounted_dmg = YES;
+    }
+  }
+
+  if (mounted_dmg)
+  {
+    NSString* script_str = @"\
+    tell application \"Finder\"\n\
+      tell disk \"Infinit\"\n\
+        eject\n\
+      end tell\n\
+    end tell\n";
+    NSAppleScript* eject_script = [[NSAppleScript alloc] initWithSource:script_str];
+    [eject_script executeAndReturnError:nil];
+  }
+
+  [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:0.0];
 }
 
 - (void)dealloc
