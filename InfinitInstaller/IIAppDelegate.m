@@ -16,7 +16,7 @@
 #define INFINIT_FINISHER_PATH @"InfinitInstallFinisher.app/Contents/MacOS/InfinitInstallFinisher"
 #define INFINIT_BUNDLE_IDENTIFIER @"io.infinit.InfinitApplication"
 
-#define SKIP_CODE_SIGNATURE_VALIDATION
+//#define SKIP_CODE_SIGNATURE_VALIDATION
 
 @implementation IIAppDelegate
 {
@@ -45,9 +45,10 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification*)aNotification
 {
-  [self closeInstallerWindow];
   [self ensureDeviceId];
   [IIMetricsReporter sendMetric:INFINIT_METRIC_START_INSTALL];
+
+  self.window.level = NSFloatingWindowLevel;
 
   self.pacman.animate = YES;
   self.progress_bar.indeterminate = YES;
@@ -276,6 +277,7 @@
   {
     [self displayErrorMessage:error.localizedDescription
                     withTitle:NSLocalizedString(@"Verification Error", nil)];
+    NSLog(@"Code sign error: %@", error.localizedDescription);
   }
 #endif
   if (valid_codesign)
@@ -293,7 +295,7 @@
 - (void)startFinisherProcessWithAppPath:(NSString*)app_path
 {
   [IIMetricsReporter sendMetric:INFINIT_METRIC_FINISH_INSTALL];
-  self.status_label.stringValue = NSLocalizedString(@"Finishing up...", nil);
+  self.status_label.stringValue = NSLocalizedString(@"Installing...", nil);
 
   NSString* finisher_path =
     [[[NSBundle mainBundle] sharedSupportPath] stringByAppendingPathComponent:INFINIT_FINISHER_PATH];
@@ -305,16 +307,6 @@
   [NSTask launchedTaskWithLaunchPath:finisher_path arguments:arguments];
   // Wait for metrics to be sent.
   [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:5.0];
-}
-
-- (void)closeInstallerWindow
-{
-  NSAppleScript* script =
-    [[NSAppleScript alloc] initWithSource:@"\
-      tell application \"Finder\"\n\
-      close Finder window \"Infinit Installer\"\n\
-      end tell"];
-  [script executeAndReturnError:nil];
 }
 
 - (void)displayErrorMessage:(NSString*)message
