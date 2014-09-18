@@ -91,7 +91,6 @@
 		83B919EA19C9688400B08CA2 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		83B919F019C96B2B00B08CA2 /* IIPacman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIPacman.h; sourceTree = "<group>"; };
 		83B919F119C96B2B00B08CA2 /* IIPacman.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIPacman.m; sourceTree = "<group>"; };
-		83ECC23219CACED0008A59A7 /* DiskArbitration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiskArbitration.framework; path = System/Library/Frameworks/DiskArbitration.framework; sourceTree = SDKROOT; };
 		97AADC1E1CE74601A4B98933 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -139,7 +138,6 @@
 		0B32504218EA031500D0A1CC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				83ECC23219CACED0008A59A7 /* DiskArbitration.framework */,
 				0B32504318EA031500D0A1CC /* Cocoa.framework */,
 				0B32506218EA031500D0A1CC /* XCTest.framework */,
 				0B32504518EA031500D0A1CC /* Other Frameworks */,
