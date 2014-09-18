@@ -20,6 +20,6 @@
 @property (nonatomic, weak) IBOutlet NSProgressIndicator* progress_bar;
 @property (nonatomic, weak) IBOutlet NSTextField* status_label;
 @property (nonatomic, strong) SUDiskImageUnarchiver* unarchiver;
-@property (nonatomic, weak) IBOutlet NSWindow* window;
+@property (nonatomic, assign) IBOutlet NSWindow* window;
 
 @end
