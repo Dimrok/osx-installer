@@ -12,10 +12,8 @@
 		0B32505018EA031500D0A1CC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B32504F18EA031500D0A1CC /* main.m */; };
 		0B32505418EA031500D0A1CC /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 0B32505218EA031500D0A1CC /* Credits.rtf */; };
 		0B32505718EA031500D0A1CC /* IIAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B32505618EA031500D0A1CC /* IIAppDelegate.m */; };
-		0B32507E18EA2EFD00D0A1CC /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 0B32507D18EA2EFD00D0A1CC /* Icon.icns */; };
 		0B3250B818EB45F100D0A1CC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B32504318EA031500D0A1CC /* Cocoa.framework */; };
 		0B3250C018EB45F100D0A1CC /* InfinitInstallFinisher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3250BF18EB45F100D0A1CC /* InfinitInstallFinisher.m */; };
-		0B3250E618EB480000D0A1CC /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 0B32507D18EA2EFD00D0A1CC /* Icon.icns */; };
 		0B3250E718EB4F6600D0A1CC /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B32505818EA031500D0A1CC /* MainMenu.xib */; };
 		0B3250EF18EB50C400D0A1CC /* InfinitInstallFinisher.app in Copy InfinitInstallFinisher.app */ = {isa = PBXBuildFile; fileRef = 0B3250B718EB45F100D0A1CC /* InfinitInstallFinisher.app */; };
 		0B3250F318EB615500D0A1CC /* SUDiskImageUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3250F218EB615500D0A1CC /* SUDiskImageUnarchiver.m */; };
@@ -28,6 +26,8 @@
 		833B239919DAB1C600D3F104 /* IIVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 833B239819DAB1C600D3F104 /* IIVideoPlayerView.m */; };
 		833B239F19DAC87D00D3F104 /* Montserrat.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 833B239C19DAC7A900D3F104 /* Montserrat.ttf */; };
 		836491E019DAE2F9004F911D /* tutorial_send.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 836491DF19DAE2F9004F911D /* tutorial_send.mp4 */; };
+		836491E819DB123F004F911D /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 836491E719DB123F004F911D /* icon.icns */; };
+		836491E919DB123F004F911D /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 836491E719DB123F004F911D /* icon.icns */; };
 		838F35A519D0011A00C3DA3C /* sound_finished.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 838F35A219D0011A00C3DA3C /* sound_finished.aiff */; };
 		838F35A619D0011A00C3DA3C /* sound_incoming.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 838F35A319D0011A00C3DA3C /* sound_incoming.aiff */; };
 		838F35A719D0011A00C3DA3C /* sound_sent.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 838F35A419D0011A00C3DA3C /* sound_sent.aiff */; };
@@ -85,7 +85,6 @@
 		0B32505518EA031500D0A1CC /* IIAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IIAppDelegate.h; sourceTree = "<group>"; };
 		0B32505618EA031500D0A1CC /* IIAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IIAppDelegate.m; sourceTree = "<group>"; };
 		0B32506218EA031500D0A1CC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		0B32507D18EA2EFD00D0A1CC /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		0B3250B718EB45F100D0A1CC /* InfinitInstallFinisher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InfinitInstallFinisher.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B3250BF18EB45F100D0A1CC /* InfinitInstallFinisher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfinitInstallFinisher.m; sourceTree = "<group>"; };
 		0B3250C118EB45F100D0A1CC /* InfinitInstallFinisher-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "InfinitInstallFinisher-Prefix.pch"; sourceTree = "<group>"; };
@@ -106,6 +105,7 @@
 		833B239819DAB1C600D3F104 /* IIVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIVideoPlayerView.m; sourceTree = "<group>"; };
 		833B239C19DAC7A900D3F104 /* Montserrat.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Montserrat.ttf; sourceTree = "<group>"; };
 		836491DF19DAE2F9004F911D /* tutorial_send.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = tutorial_send.mp4; path = "../../../fist-resources/onboarding_videos/tutorial_send.mp4"; sourceTree = "<group>"; };
+		836491E719DB123F004F911D /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = icon.icns; path = "../../../fist-resources/slices/mac/icon/icon.icns"; sourceTree = "<group>"; };
 		83849C8419CB2B8E00AE9845 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		838F35A219D0011A00C3DA3C /* sound_finished.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = sound_finished.aiff; path = "../../../fist-resources/sounds/sound_finished.aiff"; sourceTree = "<group>"; };
 		838F35A319D0011A00C3DA3C /* sound_incoming.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = sound_incoming.aiff; path = "../../../fist-resources/sounds/sound_incoming.aiff"; sourceTree = "<group>"; };
@@ -250,7 +250,7 @@
 		83B919E619C8A20C00B08CA2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				0B32507D18EA2EFD00D0A1CC /* Icon.icns */,
+				836491E719DB123F004F911D /* icon.icns */,
 				838F35A219D0011A00C3DA3C /* sound_finished.aiff */,
 				838F35A319D0011A00C3DA3C /* sound_incoming.aiff */,
 				838F35A419D0011A00C3DA3C /* sound_sent.aiff */,
@@ -365,8 +365,8 @@
 				0B32504E18EA031500D0A1CC /* InfoPlist.strings in Resources */,
 				838F35A619D0011A00C3DA3C /* sound_incoming.aiff in Resources */,
 				838F35AA19D0013900C3DA3C /* logo.png in Resources */,
+				836491E819DB123F004F911D /* icon.icns in Resources */,
 				838F35A519D0011A00C3DA3C /* sound_finished.aiff in Resources */,
-				0B32507E18EA2EFD00D0A1CC /* Icon.icns in Resources */,
 				836491E019DAE2F9004F911D /* tutorial_send.mp4 in Resources */,
 				838F35AB19D0013900C3DA3C /* logo@2x.png in Resources */,
 				0B32505418EA031500D0A1CC /* Credits.rtf in Resources */,
@@ -377,7 +377,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B3250E618EB480000D0A1CC /* Icon.icns in Resources */,
+				836491E919DB123F004F911D /* icon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
