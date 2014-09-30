@@ -27,6 +27,7 @@
   NSRunningApplication* _running_infinit;
 
   NSDictionary* _tagline_attrs;
+  NSDictionary* _instruction_attrs;
   NSDictionary* _status_attrs;
 
   NSString* _launch_app_path;
@@ -45,14 +46,26 @@
     NSMutableParagraphStyle* centered_style =
       [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     centered_style.alignment = NSCenterTextAlignment;
-    NSFont* tagline_font = [NSFont fontWithName:@"Montserrat" size:16.0];
-    NSFont* status_font = [NSFont fontWithName:@"Montserrat" size:13.0];
+    NSFont* tagline_font = [NSFont fontWithName:@"Montserrat" size:19.0];
+    NSFont* status_font = [NSFont fontWithName:@"Montserrat" size:14.0];
     _tagline_attrs = @{NSFontAttributeName: tagline_font,
                        NSParagraphStyleAttributeName: centered_style,
                        NSForegroundColorAttributeName: [self colourR:60 G:60 B:60 A:1.0]};
     _status_attrs = @{NSFontAttributeName: status_font,
                       NSParagraphStyleAttributeName: centered_style,
                       NSForegroundColorAttributeName: [self colourR:165 G:165 B:165 A:1.0]};
+
+    NSFont* instruction_font = [[NSFontManager sharedFontManager] fontWithFamily:@"Helvetica Neue"
+                                                                          traits:NSUnboldFontMask
+                                                                          weight:3
+                                                                            size:20.0];
+    NSMutableParagraphStyle* instruction_para =
+      [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    instruction_para.alignment = NSCenterTextAlignment;
+    instruction_para.lineSpacing = 8.0;
+    _instruction_attrs = @{NSFontAttributeName: instruction_font,
+                           NSParagraphStyleAttributeName: instruction_para,
+                           NSForegroundColorAttributeName: [self colourR:60 G:60 B:60 A:1.0]};
     _launch_app_path = nil;
     _finishing = NO;
   }
@@ -84,9 +97,16 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification*)aNotification
 {
+  if ([self.window respondsToSelector:@selector(titlebarAppearsTransparent)])
+    self.window.titlebarAppearsTransparent = YES;
+  [[self.window standardWindowButton:NSWindowMiniaturizeButton] setHidden:YES];
+  [[self.window standardWindowButton:NSWindowZoomButton] setHidden:YES];
   self.tagline_label.attributedStringValue =
     [[NSAttributedString alloc] initWithString:NSLocalizedString(@"WELCOME TO INFINIT", nil)
                                     attributes:_tagline_attrs];
+  NSString* instructions = NSLocalizedString(@"Send any file with\n a quick drag and drop.", nil);
+  self.instruction_label.attributedStringValue =
+    [[NSAttributedString alloc] initWithString:instructions attributes:_instruction_attrs];
   [self setStatusLabelString:NSLocalizedString(@"DOWNLOADING...", nil)];
   [self ensureDeviceId];
   [IIMetricsReporter sendMetric:INFINIT_METRIC_START_INSTALL];
