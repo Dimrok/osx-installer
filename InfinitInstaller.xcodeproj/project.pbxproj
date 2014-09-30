@@ -24,6 +24,10 @@
 		0B3250FC18EB61BD00D0A1CC /* NTSynchronousTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3250FB18EB61BD00D0A1CC /* NTSynchronousTask.m */; };
 		0B3250FF18EB68E900D0A1CC /* SUCodeSigningVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3250FE18EB68E900D0A1CC /* SUCodeSigningVerifier.m */; };
 		1AC14D207D8042D5A2432A0B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B64E0B1C0C94831B14CE84E /* libPods.a */; };
+		833B239019DAAA7800D3F104 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 833B238F19DAAA7800D3F104 /* AVFoundation.framework */; };
+		833B239919DAB1C600D3F104 /* IIVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 833B239819DAB1C600D3F104 /* IIVideoPlayerView.m */; };
+		833B239F19DAC87D00D3F104 /* Montserrat.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 833B239C19DAC7A900D3F104 /* Montserrat.ttf */; };
+		836491E019DAE2F9004F911D /* tutorial_send.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 836491DF19DAE2F9004F911D /* tutorial_send.mp4 */; };
 		838F35A519D0011A00C3DA3C /* sound_finished.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 838F35A219D0011A00C3DA3C /* sound_finished.aiff */; };
 		838F35A619D0011A00C3DA3C /* sound_incoming.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 838F35A319D0011A00C3DA3C /* sound_incoming.aiff */; };
 		838F35A719D0011A00C3DA3C /* sound_sent.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 838F35A419D0011A00C3DA3C /* sound_sent.aiff */; };
@@ -53,6 +57,16 @@
 				0B3250EF18EB50C400D0A1CC /* InfinitInstallFinisher.app in Copy InfinitInstallFinisher.app */,
 			);
 			name = "Copy InfinitInstallFinisher.app";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		833B239E19DAC86E00D3F104 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Fonts;
+			dstSubfolderSpec = 7;
+			files = (
+				833B239F19DAC87D00D3F104 /* Montserrat.ttf in CopyFiles */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -87,6 +101,11 @@
 		0B3250FD18EB68E900D0A1CC /* SUCodeSigningVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUCodeSigningVerifier.h; sourceTree = "<group>"; };
 		0B3250FE18EB68E900D0A1CC /* SUCodeSigningVerifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SUCodeSigningVerifier.m; sourceTree = "<group>"; };
 		6B64E0B1C0C94831B14CE84E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		833B238F19DAAA7800D3F104 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		833B239719DAB1C600D3F104 /* IIVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIVideoPlayerView.h; sourceTree = "<group>"; };
+		833B239819DAB1C600D3F104 /* IIVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIVideoPlayerView.m; sourceTree = "<group>"; };
+		833B239C19DAC7A900D3F104 /* Montserrat.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Montserrat.ttf; sourceTree = "<group>"; };
+		836491DF19DAE2F9004F911D /* tutorial_send.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = tutorial_send.mp4; path = "../../../fist-resources/onboarding_videos/tutorial_send.mp4"; sourceTree = "<group>"; };
 		83849C8419CB2B8E00AE9845 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		838F35A219D0011A00C3DA3C /* sound_finished.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = sound_finished.aiff; path = "../../../fist-resources/sounds/sound_finished.aiff"; sourceTree = "<group>"; };
 		838F35A319D0011A00C3DA3C /* sound_incoming.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = sound_incoming.aiff; path = "../../../fist-resources/sounds/sound_incoming.aiff"; sourceTree = "<group>"; };
@@ -105,6 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				833B239019DAAA7800D3F104 /* AVFoundation.framework in Frameworks */,
 				0B32504418EA031500D0A1CC /* Cocoa.framework in Frameworks */,
 				1AC14D207D8042D5A2432A0B /* libPods.a in Frameworks */,
 			);
@@ -144,6 +164,7 @@
 		0B32504218EA031500D0A1CC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				833B238F19DAAA7800D3F104 /* AVFoundation.framework */,
 				0B32504318EA031500D0A1CC /* Cocoa.framework */,
 				0B32506218EA031500D0A1CC /* XCTest.framework */,
 				0B32504518EA031500D0A1CC /* Other Frameworks */,
@@ -166,10 +187,10 @@
 			isa = PBXGroup;
 			children = (
 				83B919E619C8A20C00B08CA2 /* Resources */,
+				833B239319DAAFD300D3F104 /* Video Player */,
 				83B919ED19C96ADC00B08CA2 /* Metrics */,
 				0B3250F018EB615500D0A1CC /* Sparkle */,
 				83B919EF19C96AFA00B08CA2 /* Pacman */,
-				0B32507D18EA2EFD00D0A1CC /* Icon.icns */,
 				0B32505518EA031500D0A1CC /* IIAppDelegate.h */,
 				0B32505618EA031500D0A1CC /* IIAppDelegate.m */,
 				0B32505818EA031500D0A1CC /* MainMenu.xib */,
@@ -217,14 +238,26 @@
 			path = Sparkle;
 			sourceTree = "<group>";
 		};
+		833B239319DAAFD300D3F104 /* Video Player */ = {
+			isa = PBXGroup;
+			children = (
+				833B239719DAB1C600D3F104 /* IIVideoPlayerView.h */,
+				833B239819DAB1C600D3F104 /* IIVideoPlayerView.m */,
+			);
+			name = "Video Player";
+			sourceTree = "<group>";
+		};
 		83B919E619C8A20C00B08CA2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0B32507D18EA2EFD00D0A1CC /* Icon.icns */,
 				838F35A219D0011A00C3DA3C /* sound_finished.aiff */,
 				838F35A319D0011A00C3DA3C /* sound_incoming.aiff */,
 				838F35A419D0011A00C3DA3C /* sound_sent.aiff */,
 				838F35A819D0013900C3DA3C /* logo.png */,
 				838F35A919D0013900C3DA3C /* logo@2x.png */,
+				833B239C19DAC7A900D3F104 /* Montserrat.ttf */,
+				836491DF19DAE2F9004F911D /* tutorial_send.mp4 */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -258,6 +291,7 @@
 				0B32503C18EA031500D0A1CC /* Sources */,
 				0B32503D18EA031500D0A1CC /* Frameworks */,
 				0B32503E18EA031500D0A1CC /* Resources */,
+				833B239E19DAC86E00D3F104 /* CopyFiles */,
 				0B3250EE18EB50B500D0A1CC /* Copy InfinitInstallFinisher.app */,
 				CF8D222DAFEB4A34B67BD0B4 /* Copy Pods Resources */,
 			);
@@ -333,6 +367,7 @@
 				838F35AA19D0013900C3DA3C /* logo.png in Resources */,
 				838F35A519D0011A00C3DA3C /* sound_finished.aiff in Resources */,
 				0B32507E18EA2EFD00D0A1CC /* Icon.icns in Resources */,
+				836491E019DAE2F9004F911D /* tutorial_send.mp4 in Resources */,
 				838F35AB19D0013900C3DA3C /* logo@2x.png in Resources */,
 				0B32505418EA031500D0A1CC /* Credits.rtf in Resources */,
 			);
@@ -391,6 +426,7 @@
 				83B919DF19C8808C00B08CA2 /* IIMetricsReporter.m in Sources */,
 				0B32505718EA031500D0A1CC /* IIAppDelegate.m in Sources */,
 				0B32505018EA031500D0A1CC /* main.m in Sources */,
+				833B239919DAB1C600D3F104 /* IIVideoPlayerView.m in Sources */,
 				0B3250FC18EB61BD00D0A1CC /* NTSynchronousTask.m in Sources */,
 				0B3250F818EB618200D0A1CC /* SUUnarchiver_Private.m in Sources */,
 				0B3250F318EB615500D0A1CC /* SUDiskImageUnarchiver.m in Sources */,

@@ -16,6 +16,8 @@
 #define INFINIT_FINISHER_PATH @"InfinitInstallFinisher.app/Contents/MacOS/InfinitInstallFinisher"
 #define INFINIT_BUNDLE_IDENTIFIER @"io.infinit.InfinitApplication"
 
+#define INFINIT_VIDEO_PLAYS 2
+
 //#define SKIP_CODE_SIGNATURE_VALIDATION
 
 @implementation IIAppDelegate
@@ -23,6 +25,12 @@
 @private
   NSString* _device_id;
   NSRunningApplication* _running_infinit;
+
+  NSDictionary* _tagline_attrs;
+  NSDictionary* _status_attrs;
+
+  NSString* _launch_app_path;
+  BOOL _finishing;
 }
 
 - (id)init
@@ -34,8 +42,32 @@
                                                            selector:@selector(anApplicationTerminated:)
                                                                name:NSWorkspaceDidTerminateApplicationNotification
                                                              object:nil];
+    NSMutableParagraphStyle* centered_style =
+      [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    centered_style.alignment = NSCenterTextAlignment;
+    NSFont* tagline_font = [NSFont fontWithName:@"Montserrat" size:16.0];
+    NSFont* status_font = [NSFont fontWithName:@"Montserrat" size:14.0];
+    _tagline_attrs = @{NSFontAttributeName: tagline_font,
+                       NSParagraphStyleAttributeName: centered_style,
+                       NSForegroundColorAttributeName: [self colourR:60 G:60 B:60 A:1.0]};
+    _status_attrs = @{NSFontAttributeName: status_font,
+                      NSParagraphStyleAttributeName: centered_style,
+                      NSForegroundColorAttributeName: [self colourR:165 G:165 B:165 A:1.0]};
+    _launch_app_path = nil;
+    _finishing = NO;
   }
   return self;
+}
+
+- (NSColor*)colourR:(NSUInteger)red
+                  G:(NSUInteger)green
+                  B:(NSUInteger)blue
+                  A:(CGFloat)alpha
+{
+  return [NSColor colorWithDeviceRed:(((CGFloat)red)/255.0)
+                               green:(((CGFloat)green)/255.0)
+                                blue:(((CGFloat)blue)/255.0)
+                               alpha:alpha];
 }
 
 - (void)dealloc
@@ -43,14 +75,30 @@
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
+- (void)setStatusLabelString:(NSString*)str
+{
+  self.status_label.attributedStringValue =
+    [[NSAttributedString alloc] initWithString:str
+                                    attributes:_status_attrs];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification*)aNotification
 {
+  self.tagline_label.attributedStringValue =
+    [[NSAttributedString alloc] initWithString:NSLocalizedString(@"WELCOME TO INFINIT", nil)
+                                    attributes:_tagline_attrs];
+  [self setStatusLabelString:NSLocalizedString(@"DOWNLOADING...", nil)];
   [self ensureDeviceId];
   [IIMetricsReporter sendMetric:INFINIT_METRIC_START_INSTALL];
 
+  self.video_view.delegate = self;
+  self.video_view.url =
+    [[NSBundle mainBundle] URLForResource:@"tutorial_send" withExtension:@"mp4"];
+
+  [self.video_view play];
+
   self.window.level = NSFloatingWindowLevel;
 
-  self.pacman.animate = YES;
   self.progress_bar.indeterminate = YES;
   [self.progress_bar startAnimation:nil];
 
@@ -62,7 +110,6 @@
         ![app isEqual:[NSRunningApplication currentApplication]])
     {
       NSLog(@"Found running Infinit, will terminate");
-      self.status_label.stringValue = NSLocalizedString(@"Quitting existing Infinit...", nil);
       _running_infinit = app;
       [app terminate];
     }
@@ -130,7 +177,7 @@
   }
   if (make_device_id)
   {
-    _device_id = [[NSUUID UUID] UUIDString];
+    _device_id = [[[NSUUID UUID] UUIDString] lowercaseString];
     [_device_id writeToFile:device_id_path
                  atomically:YES
                    encoding:NSUTF8StringEncoding
@@ -138,14 +185,12 @@
     NSLog(@"Made device_id: %@", _device_id);
   }
   _device_id =
-    [_device_id stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    [[_device_id stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
   [IIMetricsReporter setDeviceId:_device_id];
 }
 
 - (void)beginInstall
 {
-  self.status_label.stringValue = NSLocalizedString(@"Checking for latest...", nil);
-
   [AFKissXMLRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"application/rss+xml"]];
 
   self.client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:INFINIT_BASE_URL]];
@@ -190,11 +235,6 @@
 
   NSLog(@"Downloading %@", url);
   [IIMetricsReporter sendMetric:INFINIT_METRIC_START_DOWNLOAD];
-
-  NSString* app_name = [url.lastPathComponent stringByDeletingPathExtension];
-
-  self.status_label.stringValue =
-    [NSString stringWithFormat:@"%@ %@...", NSLocalizedString(@"Downloading", nil), app_name];
 
   NSString* uuid = [[NSUUID UUID] UUIDString];
   NSString* temp_path = [NSTemporaryDirectory() stringByAppendingString:uuid];
@@ -242,10 +282,8 @@
     self.unarchiver = [SUDiskImageUnarchiver unarchiverForPath:file_path];
     self.unarchiver.delegate = self;
 
-    NSString* app_name = [file_path.lastPathComponent stringByDeletingPathExtension];
 
-    self.status_label.stringValue =
-      [NSString stringWithFormat:@"%@ %@...", NSLocalizedString(@"Extracting", nil), app_name];
+    [self setStatusLabelString:NSLocalizedString(@"INSTALLING...", nil)];
 
     self.progress_bar.indeterminate = YES;
     [self.progress_bar startAnimation:nil];
@@ -262,9 +300,6 @@
 #ifdef SKIP_CODE_SIGNATURE_VALIDATION
   BOOL valid_codesign = YES;
 #else
-  NSString* app_name = [INFINIT_APP_NAME stringByDeletingPathExtension];
-  self.status_label.stringValue =
-    [NSString stringWithFormat:@"%@ %@...", NSLocalizedString(@"Verifying", nil), app_name];
   NSLog(@"Verifying code signature on %@", app_path);
   NSError* error = nil;
   BOOL valid_codesign = [SUCodeSigningVerifier codeSignatureIsValidAtPath:app_path error:&error];
@@ -277,7 +312,10 @@
 #endif
   if (valid_codesign)
   {
-    [self startFinisherProcessWithAppPath:app_path];
+    [IIMetricsReporter sendMetric:INFINIT_METRIC_FINISH_INSTALL];
+    _launch_app_path = [app_path copy];
+    if (self.video_view.play_count >= INFINIT_VIDEO_PLAYS)
+      [self startFinisherProcessWithAppPath:app_path];
   }
 }
 
@@ -289,9 +327,9 @@
 
 - (void)startFinisherProcessWithAppPath:(NSString*)app_path
 {
-  [IIMetricsReporter sendMetric:INFINIT_METRIC_FINISH_INSTALL];
-  self.status_label.stringValue = NSLocalizedString(@"Installing...", nil);
-
+  if (_finishing)
+    return;
+  _finishing = YES;
   NSString* finisher_path =
     [[[NSBundle mainBundle] sharedSupportPath] stringByAppendingPathComponent:INFINIT_FINISHER_PATH];
 
@@ -301,14 +339,14 @@
 
   [NSTask launchedTaskWithLaunchPath:finisher_path arguments:arguments];
   // Wait for metrics to be sent.
-  [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:5.0];
+  [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:1.5];
 }
 
 - (void)displayErrorMessage:(NSString*)message
                   withTitle:(NSString*)title
 {
   NSString* error_msg = [NSString stringWithFormat:@"%@ - %@", title, message];
-  self.status_label.stringValue = error_msg;
+  [self setStatusLabelString:error_msg.uppercaseString];
 
   if (self.progress_bar.isIndeterminate)
   {
@@ -316,6 +354,14 @@
     self.progress_bar.indeterminate = NO;
     self.progress_bar.doubleValue = 1.0;
   }
+}
+
+//- Video Player Protocol --------------------------------------------------------------------------
+
+- (void)finishedPlayOfVideo:(IIVideoPlayerView*)sender
+{
+  if (_launch_app_path && self.video_view.play_count >= INFINIT_VIDEO_PLAYS)
+    [self startFinisherProcessWithAppPath:_launch_app_path];
 }
 
 @end

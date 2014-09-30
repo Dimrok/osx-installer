@@ -17,6 +17,8 @@
 //#define INFINIT_METRICS_PORT 8282
 #define INFINIT_METRICS_COLLECTION @"users"
 
+//#define INFINIT_NO_METRICS
+
 static IIMetricsReporter* _instance = nil;
 
 @implementation IIMetricsReporter
@@ -77,6 +79,10 @@ static IIMetricsReporter* _instance = nil;
 
 - (void)_sendMetric:(InfinitMetricType)metric
 {
+#ifdef INFINIT_NO_METRICS
+  NSLog(@"Not sending metric");
+  return;
+#endif
   NSDate* now = [NSDate date];
   NSNumber* timestamp = [NSNumber numberWithDouble:now.timeIntervalSince1970];
   NSDictionary* metric_dict = @{

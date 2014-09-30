@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6246" systemVersion="14A361c" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="14A361c" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6246"/>
+        <development version="5100" identifier="xcode"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -18,9 +19,10 @@
         </customObject>
         <customObject id="Voe-Tx-rLC" customClass="IIAppDelegate">
             <connections>
-                <outlet property="pacman" destination="ECn-xO-Xds" id="EB7-eB-tOr"/>
                 <outlet property="progress_bar" destination="tcw-G1-TBT" id="aTa-UT-6vK"/>
                 <outlet property="status_label" destination="fr0-cD-nxh" id="5wK-Sa-dBp"/>
+                <outlet property="tagline_label" destination="VM9-Wr-HmS" id="T6C-bc-RKR"/>
+                <outlet property="video_view" destination="O4W-ap-69v" id="Rm3-nO-lEy"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -44,16 +46,16 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="Install Infinit" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
-            <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES"/>
-            <rect key="contentRect" x="517" y="410" width="286" height="445"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
+        <window title="Infinit Installer" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+            <rect key="contentRect" x="517" y="410" width="596" height="380"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="286" height="445"/>
+                <rect key="frame" x="0.0" y="0.0" width="596" height="380"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fr0-cD-nxh">
-                        <rect key="frame" x="31" y="206" width="224" height="20"/>
+                        <rect key="frame" x="27" y="60" width="247" height="20"/>
                         <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Downloading..." id="wso-gA-SXR">
                             <font key="font" size="13" name="HelveticaNeue"/>
                             <color key="textColor" red="0.31764705882352939" green="0.31764705882352939" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
@@ -61,26 +63,36 @@
                         </textFieldCell>
                     </textField>
                     <progressIndicator fixedFrame="YES" maxValue="1" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="tcw-G1-TBT">
-                        <rect key="frame" x="33" y="182" width="220" height="20"/>
+                        <rect key="frame" x="48" y="27" width="204" height="20"/>
                     </progressIndicator>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c3G-uT-moB">
-                        <rect key="frame" x="49" y="307" width="188" height="93"/>
+                        <rect key="frame" x="56" y="261" width="188" height="93"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="logo" id="0n2-fY-kvD"/>
                     </imageView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VM9-Wr-HmS">
-                        <rect key="frame" x="42" y="279" width="202" height="20"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="The smartest way to send your files" id="9M2-AG-hLW">
+                        <rect key="frame" x="42" y="212" width="217" height="20"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Welcome to Infinit" id="9M2-AG-hLW">
                             <font key="font" size="13" name="HelveticaNeue-Light"/>
                             <color key="textColor" red="0.31764705882352939" green="0.31764705882352939" blue="0.28235294117647058" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ECn-xO-Xds" customClass="IIPacman">
-                        <rect key="frame" x="131" y="91" width="25" height="25"/>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JiP-SQ-KzW">
+                        <rect key="frame" x="59" y="123" width="182" height="46"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" id="lfv-f3-pcm">
+                            <font key="font" size="16" name="HelveticaNeue-Light"/>
+                            <string key="title">Send any file with
+a quick drag and drop.</string>
+                            <color key="textColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O4W-ap-69v" customClass="IIVideoPlayerView">
+                        <rect key="frame" x="298" y="0.0" width="298" height="380"/>
                     </customView>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="260" y="385.5"/>
+            <point key="canvasLocation" x="45" y="72"/>
         </window>
     </objects>
     <resources>
