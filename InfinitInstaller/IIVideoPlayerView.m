@@ -56,6 +56,11 @@
   [_player play];
 }
 
+- (void)pause
+{
+  [_player pause];
+}
+
 - (void)videoFinished:(NSNotification*)notification
 {
   _play_count += 1;

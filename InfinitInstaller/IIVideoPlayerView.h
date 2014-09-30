@@ -17,6 +17,7 @@
 @property (nonatomic, readonly) NSUInteger play_count;
 
 - (void)play;
+- (void)pause;
 
 @end
 

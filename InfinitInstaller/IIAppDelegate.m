@@ -18,7 +18,7 @@
 
 #define INFINIT_VIDEO_PLAYS 2
 
-//#define SKIP_CODE_SIGNATURE_VALIDATION
+#define SKIP_CODE_SIGNATURE_VALIDATION
 
 @implementation IIAppDelegate
 {
@@ -46,7 +46,7 @@
       [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     centered_style.alignment = NSCenterTextAlignment;
     NSFont* tagline_font = [NSFont fontWithName:@"Montserrat" size:16.0];
-    NSFont* status_font = [NSFont fontWithName:@"Montserrat" size:14.0];
+    NSFont* status_font = [NSFont fontWithName:@"Montserrat" size:13.0];
     _tagline_attrs = @{NSFontAttributeName: tagline_font,
                        NSParagraphStyleAttributeName: centered_style,
                        NSForegroundColorAttributeName: [self colourR:60 G:60 B:60 A:1.0]};
@@ -91,11 +91,13 @@
   [self ensureDeviceId];
   [IIMetricsReporter sendMetric:INFINIT_METRIC_START_INSTALL];
 
+  [self.window center];
+
   self.video_view.delegate = self;
   self.video_view.url =
     [[NSBundle mainBundle] URLForResource:@"tutorial_send" withExtension:@"mp4"];
 
-  [self.video_view play];
+  [self.video_view performSelector:@selector(play) withObject:nil afterDelay:3.0];
 
   self.window.level = NSFloatingWindowLevel;
 
@@ -329,6 +331,7 @@
 {
   if (_finishing)
     return;
+  [self.video_view pause];
   _finishing = YES;
   NSString* finisher_path =
     [[[NSBundle mainBundle] sharedSupportPath] stringByAppendingPathComponent:INFINIT_FINISHER_PATH];
