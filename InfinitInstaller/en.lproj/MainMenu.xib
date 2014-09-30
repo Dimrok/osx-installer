@@ -49,14 +49,14 @@
         </menu>
         <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" fullSizeContentView="YES"/>
-            <rect key="contentRect" x="517" y="410" width="750" height="488"/>
+            <rect key="contentRect" x="517" y="410" width="720" height="488"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="750" height="488"/>
+                <rect key="frame" x="0.0" y="0.0" width="720" height="488"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fr0-cD-nxh">
-                        <rect key="frame" x="61" y="82" width="247" height="20"/>
+                        <rect key="frame" x="48" y="82" width="247" height="20"/>
                         <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Downloading..." id="wso-gA-SXR">
                             <font key="font" size="13" name="HelveticaNeue"/>
                             <color key="textColor" red="0.31764705882352939" green="0.31764705882352939" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
@@ -64,14 +64,14 @@
                         </textFieldCell>
                     </textField>
                     <progressIndicator fixedFrame="YES" maxValue="1" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="tcw-G1-TBT">
-                        <rect key="frame" x="82" y="49" width="204" height="20"/>
+                        <rect key="frame" x="69" y="49" width="204" height="20"/>
                     </progressIndicator>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c3G-uT-moB">
-                        <rect key="frame" x="90" y="352" width="188" height="93"/>
+                        <rect key="frame" x="77" y="352" width="188" height="93"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="logo" id="0n2-fY-kvD"/>
                     </imageView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VM9-Wr-HmS">
-                        <rect key="frame" x="76" y="277" width="217" height="30"/>
+                        <rect key="frame" x="63" y="277" width="217" height="30"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Welcome to Infinit" id="9M2-AG-hLW">
                             <font key="font" size="13" name="HelveticaNeue-Light"/>
                             <color key="textColor" red="0.31764705882352939" green="0.31764705882352939" blue="0.28235294117647058" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
@@ -79,10 +79,10 @@
                         </textFieldCell>
                     </textField>
                     <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O4W-ap-69v" customClass="IIVideoPlayerView">
-                        <rect key="frame" x="375" y="0.0" width="375" height="488"/>
+                        <rect key="frame" x="345" y="0.0" width="375" height="488"/>
                     </customView>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JiP-SQ-KzW">
-                        <rect key="frame" x="71" y="168" width="226" height="60"/>
+                        <rect key="frame" x="58" y="168" width="226" height="60"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" id="lfv-f3-pcm">
                             <font key="font" size="20" name="HelveticaNeue-Light"/>
                             <string key="title">Send any file with

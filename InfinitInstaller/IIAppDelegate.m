@@ -97,8 +97,11 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification*)aNotification
 {
-  if ([self.window respondsToSelector:@selector(titlebarAppearsTransparent)])
-    self.window.titlebarAppearsTransparent = YES;
+// XXX: Must build with 10.10 SDK for this to work
+//  if ([self.window respondsToSelector:@selector(titlebarAppearsTransparent)])
+//    self.window.titlebarAppearsTransparent = YES;
+//  else
+  self.window.title = NSLocalizedString(@"Infinit Installer", nil);
   [[self.window standardWindowButton:NSWindowMiniaturizeButton] setHidden:YES];
   [[self.window standardWindowButton:NSWindowZoomButton] setHidden:YES];
   self.tagline_label.attributedStringValue =
