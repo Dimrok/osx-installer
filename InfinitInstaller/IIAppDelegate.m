@@ -18,7 +18,7 @@
 
 #define INFINIT_VIDEO_PLAYS 2
 
-#define SKIP_CODE_SIGNATURE_VALIDATION
+//#define SKIP_CODE_SIGNATURE_VALIDATION
 
 @implementation IIAppDelegate
 {
