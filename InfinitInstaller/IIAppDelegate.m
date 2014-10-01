@@ -114,8 +114,6 @@
   [self ensureDeviceId];
   [IIMetricsReporter sendMetric:INFINIT_METRIC_START_INSTALL];
 
-  [self.window center];
-
   self.video_view.delegate = self;
   self.video_view.url =
     [[NSBundle mainBundle] URLForResource:@"tutorial_send" withExtension:@"mp4"];
