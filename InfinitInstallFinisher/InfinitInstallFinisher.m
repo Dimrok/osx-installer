@@ -9,12 +9,13 @@
 #import <Cocoa/Cocoa.h>
 
 #define INFINIT_APP_PATH @"/Applications/Infinit.app"
+#define INFINIT_APP_FALLBACK_PATH @"~/Applications/Infinit.app"
 
 @interface InfinitTerminationListener : NSObject
 {
 @private
   pid_t _parent_pid;
-  NSString* _app_path;
+  NSString* _install_path;
 }
 
 - (id)initWithParentProcessID:(pid_t)ppid
@@ -30,7 +31,7 @@
   if ((self = [super init]))
   {
     _parent_pid = ppid;
-    _app_path = [install_path copy];
+    _install_path = [install_path copy];
 
     BOOL already_terminated = (getppid() == 1); // ppid is launchd (1) => parent terminated already
 
@@ -61,17 +62,37 @@
 - (void)finishInstallationAndLaunchInfinit
 {
   NSLog(@"Parent process (%d) has quit.", _parent_pid);
-  NSLog(@"Finishing Installation of: %@", _app_path);
+  NSLog(@"Finishing Installation of: %@", _install_path);
 
   NSError* error = nil;
   NSFileManager* mgr = [NSFileManager defaultManager];
 
-  if ([mgr fileExistsAtPath:INFINIT_APP_PATH])
-    [mgr removeItemAtPath:INFINIT_APP_PATH error:&error];
+  NSString* destination_path;
+  if ([[NSFileManager defaultManager] isWritableFileAtPath:INFINIT_APP_PATH])
+  {
+    destination_path = INFINIT_APP_PATH;
+  }
+  else
+  {
+    NSString* home_applications = [@"~/Applications" stringByStandardizingPath];
+    destination_path = [INFINIT_APP_FALLBACK_PATH stringByStandardizingPath];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:home_applications])
+    {
+      [[NSFileManager defaultManager] createDirectoryAtPath:home_applications
+                                withIntermediateDirectories:NO
+                                                 attributes:nil
+                                                      error:&error];
+      if (error)
+        NSLog(@"Unable to create ~/Applications directory: %@", error);
+    }
+  }
 
-  [mgr copyItemAtPath:_app_path toPath:INFINIT_APP_PATH error:&error];
+  if ([mgr fileExistsAtPath:destination_path])
+    [mgr removeItemAtPath:destination_path error:&error];
 
-  [[NSWorkspace sharedWorkspace] launchApplication:INFINIT_APP_PATH];
+  [mgr copyItemAtPath:_install_path toPath:destination_path error:&error];
+
+  [[NSWorkspace sharedWorkspace] launchApplication:destination_path];
 
   BOOL mounted_dmg = NO;
 
