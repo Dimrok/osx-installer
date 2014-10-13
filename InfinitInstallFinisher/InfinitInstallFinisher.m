@@ -68,7 +68,8 @@
   NSFileManager* mgr = [NSFileManager defaultManager];
 
   NSString* destination_path;
-  if ([[NSFileManager defaultManager] isWritableFileAtPath:INFINIT_APP_PATH])
+  NSString* applications_dir = [@"/Applications" stringByStandardizingPath];
+  if ([[NSFileManager defaultManager] isWritableFileAtPath:applications_dir])
   {
     destination_path = INFINIT_APP_PATH;
   }
