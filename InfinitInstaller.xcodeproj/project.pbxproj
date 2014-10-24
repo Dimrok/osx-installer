@@ -22,10 +22,10 @@
 		0B3250FC18EB61BD00D0A1CC /* NTSynchronousTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3250FB18EB61BD00D0A1CC /* NTSynchronousTask.m */; };
 		0B3250FF18EB68E900D0A1CC /* SUCodeSigningVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3250FE18EB68E900D0A1CC /* SUCodeSigningVerifier.m */; };
 		1AC14D207D8042D5A2432A0B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B64E0B1C0C94831B14CE84E /* libPods.a */; };
+		83312D0F19FA443E007897D4 /* tutorial_send_2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 83312D0E19FA443E007897D4 /* tutorial_send_2.mp4 */; };
 		833B239019DAAA7800D3F104 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 833B238F19DAAA7800D3F104 /* AVFoundation.framework */; };
 		833B239919DAB1C600D3F104 /* IIVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 833B239819DAB1C600D3F104 /* IIVideoPlayerView.m */; };
 		833B239F19DAC87D00D3F104 /* Montserrat.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 833B239C19DAC7A900D3F104 /* Montserrat.ttf */; };
-		836491E019DAE2F9004F911D /* tutorial_send.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 836491DF19DAE2F9004F911D /* tutorial_send.mp4 */; };
 		836491E819DB123F004F911D /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 836491E719DB123F004F911D /* icon.icns */; };
 		836491E919DB123F004F911D /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 836491E719DB123F004F911D /* icon.icns */; };
 		838F35A519D0011A00C3DA3C /* sound_finished.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 838F35A219D0011A00C3DA3C /* sound_finished.aiff */; };
@@ -100,11 +100,11 @@
 		0B3250FD18EB68E900D0A1CC /* SUCodeSigningVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUCodeSigningVerifier.h; sourceTree = "<group>"; };
 		0B3250FE18EB68E900D0A1CC /* SUCodeSigningVerifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SUCodeSigningVerifier.m; sourceTree = "<group>"; };
 		6B64E0B1C0C94831B14CE84E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		83312D0E19FA443E007897D4 /* tutorial_send_2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = tutorial_send_2.mp4; path = "../../../fist-resources/onboarding_videos/tutorial_send_2.mp4"; sourceTree = "<group>"; };
 		833B238F19DAAA7800D3F104 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		833B239719DAB1C600D3F104 /* IIVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIVideoPlayerView.h; sourceTree = "<group>"; };
 		833B239819DAB1C600D3F104 /* IIVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIVideoPlayerView.m; sourceTree = "<group>"; };
 		833B239C19DAC7A900D3F104 /* Montserrat.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Montserrat.ttf; sourceTree = "<group>"; };
-		836491DF19DAE2F9004F911D /* tutorial_send.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = tutorial_send.mp4; path = "../../../fist-resources/onboarding_videos/tutorial_send.mp4"; sourceTree = "<group>"; };
 		836491E719DB123F004F911D /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = icon.icns; path = "../../../fist-resources/slices/mac/icon/icon.icns"; sourceTree = "<group>"; };
 		83849C8419CB2B8E00AE9845 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		838F35A219D0011A00C3DA3C /* sound_finished.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = sound_finished.aiff; path = "../../../fist-resources/sounds/sound_finished.aiff"; sourceTree = "<group>"; };
@@ -257,7 +257,7 @@
 				838F35A819D0013900C3DA3C /* logo.png */,
 				838F35A919D0013900C3DA3C /* logo@2x.png */,
 				833B239C19DAC7A900D3F104 /* Montserrat.ttf */,
-				836491DF19DAE2F9004F911D /* tutorial_send.mp4 */,
+				83312D0E19FA443E007897D4 /* tutorial_send_2.mp4 */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -362,12 +362,12 @@
 			files = (
 				0B3250E718EB4F6600D0A1CC /* MainMenu.xib in Resources */,
 				838F35A719D0011A00C3DA3C /* sound_sent.aiff in Resources */,
+				83312D0F19FA443E007897D4 /* tutorial_send_2.mp4 in Resources */,
 				0B32504E18EA031500D0A1CC /* InfoPlist.strings in Resources */,
 				838F35A619D0011A00C3DA3C /* sound_incoming.aiff in Resources */,
 				838F35AA19D0013900C3DA3C /* logo.png in Resources */,
 				836491E819DB123F004F911D /* icon.icns in Resources */,
 				838F35A519D0011A00C3DA3C /* sound_finished.aiff in Resources */,
-				836491E019DAE2F9004F911D /* tutorial_send.mp4 in Resources */,
 				838F35AB19D0013900C3DA3C /* logo@2x.png in Resources */,
 				0B32505418EA031500D0A1CC /* Credits.rtf in Resources */,
 			);

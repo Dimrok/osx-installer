@@ -116,7 +116,7 @@
 
   self.video_view.delegate = self;
   self.video_view.url =
-    [[NSBundle mainBundle] URLForResource:@"tutorial_send" withExtension:@"mp4"];
+    [[NSBundle mainBundle] URLForResource:@"tutorial_send_2" withExtension:@"mp4"];
 
   [self.video_view performSelector:@selector(play) withObject:nil afterDelay:3.0];
 
