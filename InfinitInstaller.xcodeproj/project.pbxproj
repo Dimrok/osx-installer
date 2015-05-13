@@ -26,6 +26,9 @@
 		833B239019DAAA7800D3F104 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 833B238F19DAAA7800D3F104 /* AVFoundation.framework */; };
 		833B239919DAB1C600D3F104 /* IIVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 833B239819DAB1C600D3F104 /* IIVideoPlayerView.m */; };
 		833B239F19DAC87D00D3F104 /* Montserrat.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 833B239C19DAC7A900D3F104 /* Montserrat.ttf */; };
+		83457E9D1B03A32A00B7C135 /* IICodeFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 83457E9C1B03A32A00B7C135 /* IICodeFinder.m */; };
+		83457E9F1B03A66200B7C135 /* DiskArbitration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83457E9E1B03A66200B7C135 /* DiskArbitration.framework */; };
+		83457EA11B03AAFF00B7C135 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83457EA01B03AAFF00B7C135 /* IOKit.framework */; };
 		836491E819DB123F004F911D /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 836491E719DB123F004F911D /* icon.icns */; };
 		836491E919DB123F004F911D /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 836491E719DB123F004F911D /* icon.icns */; };
 		838F35A519D0011A00C3DA3C /* sound_finished.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 838F35A219D0011A00C3DA3C /* sound_finished.aiff */; };
@@ -105,6 +108,10 @@
 		833B239719DAB1C600D3F104 /* IIVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIVideoPlayerView.h; sourceTree = "<group>"; };
 		833B239819DAB1C600D3F104 /* IIVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIVideoPlayerView.m; sourceTree = "<group>"; };
 		833B239C19DAC7A900D3F104 /* Montserrat.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Montserrat.ttf; sourceTree = "<group>"; };
+		83457E9B1B03A32A00B7C135 /* IICodeFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IICodeFinder.h; sourceTree = "<group>"; };
+		83457E9C1B03A32A00B7C135 /* IICodeFinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IICodeFinder.m; sourceTree = "<group>"; };
+		83457E9E1B03A66200B7C135 /* DiskArbitration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiskArbitration.framework; path = System/Library/Frameworks/DiskArbitration.framework; sourceTree = SDKROOT; };
+		83457EA01B03AAFF00B7C135 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		836491E719DB123F004F911D /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = icon.icns; path = "../../../fist-resources/slices/mac/icon/icon.icns"; sourceTree = "<group>"; };
 		83849C8419CB2B8E00AE9845 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		838F35A219D0011A00C3DA3C /* sound_finished.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = sound_finished.aiff; path = "../../../fist-resources/sounds/sound_finished.aiff"; sourceTree = "<group>"; };
@@ -134,6 +141,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83457EA11B03AAFF00B7C135 /* IOKit.framework in Frameworks */,
+				83457E9F1B03A66200B7C135 /* DiskArbitration.framework in Frameworks */,
 				0B3250B818EB45F100D0A1CC /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -164,6 +173,8 @@
 		0B32504218EA031500D0A1CC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				83457EA01B03AAFF00B7C135 /* IOKit.framework */,
+				83457E9E1B03A66200B7C135 /* DiskArbitration.framework */,
 				833B238F19DAAA7800D3F104 /* AVFoundation.framework */,
 				0B32504318EA031500D0A1CC /* Cocoa.framework */,
 				0B32506218EA031500D0A1CC /* XCTest.framework */,
@@ -195,6 +206,8 @@
 				0B32505618EA031500D0A1CC /* IIAppDelegate.m */,
 				0B32505818EA031500D0A1CC /* MainMenu.xib */,
 				0B32504A18EA031500D0A1CC /* Supporting Files */,
+				83457E9B1B03A32A00B7C135 /* IICodeFinder.h */,
+				83457E9C1B03A32A00B7C135 /* IICodeFinder.m */,
 			);
 			path = InfinitInstaller;
 			sourceTree = "<group>";
@@ -430,6 +443,7 @@
 				0B3250FC18EB61BD00D0A1CC /* NTSynchronousTask.m in Sources */,
 				0B3250F818EB618200D0A1CC /* SUUnarchiver_Private.m in Sources */,
 				0B3250F318EB615500D0A1CC /* SUDiskImageUnarchiver.m in Sources */,
+				83457E9D1B03A32A00B7C135 /* IICodeFinder.m in Sources */,
 				83B919F219C96B2B00B08CA2 /* IIPacman.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
