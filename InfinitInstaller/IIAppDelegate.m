@@ -7,11 +7,12 @@
 //
 
 #import "IIAppDelegate.h"
+#import "IICodeFinder.h"
 #import "IIMetricsReporter.h"
+
 #import "SUCodeSigningVerifier.h"
 
 #define INFINIT_BASE_URL @"http://download.infinit.io"
-#define INFINIT_ERROR_DOMAIN @"com.infinit.io.error"
 #define INFINIT_APP_NAME @"Infinit.app"
 #define INFINIT_FINISHER_PATH @"InfinitInstallFinisher.app/Contents/MacOS/InfinitInstallFinisher"
 #define INFINIT_BUNDLE_IDENTIFIER @"io.infinit.InfinitApplication"
@@ -20,29 +21,31 @@
 
 //#define SKIP_CODE_SIGNATURE_VALIDATION
 
+@interface IIAppDelegate ()
+
+@property (nonatomic, readonly) NSString* code;
+@property (nonatomic, readonly) NSString* device_id;
+@property (nonatomic, readonly) NSRunningApplication* running_infinit;
+@property (nonatomic, readonly) NSDictionary* tagline_attrs;
+@property (nonatomic, readonly) NSDictionary* instruction_attrs;
+@property (nonatomic, readonly) NSDictionary* status_attrs;
+@property (nonatomic, readonly) NSString* launch_app_path;
+@property (atomic, readonly) BOOL finishing;
+
+@end
+
 @implementation IIAppDelegate
-{
-@private
-  NSString* _device_id;
-  NSRunningApplication* _running_infinit;
-
-  NSDictionary* _tagline_attrs;
-  NSDictionary* _instruction_attrs;
-  NSDictionary* _status_attrs;
-
-  NSString* _launch_app_path;
-  BOOL _finishing;
-}
 
 - (id)init
 {
   if (self = [super init])
   {
     _device_id = @"unknown";
-    [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
-                                                           selector:@selector(anApplicationTerminated:)
-                                                               name:NSWorkspaceDidTerminateApplicationNotification
-                                                             object:nil];
+    NSNotificationCenter* notification_center = [[NSWorkspace sharedWorkspace] notificationCenter];
+    [notification_center addObserver:self
+                            selector:@selector(anApplicationTerminated:)
+                                name:NSWorkspaceDidTerminateApplicationNotification
+                              object:nil];
     NSMutableParagraphStyle* centered_style =
       [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     centered_style.alignment = NSCenterTextAlignment;
@@ -97,11 +100,11 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification*)aNotification
 {
-// XXX: Must build with 10.10 SDK for this to work
-//  if ([self.window respondsToSelector:@selector(titlebarAppearsTransparent)])
-//    self.window.titlebarAppearsTransparent = YES;
-//  else
-  self.window.title = NSLocalizedString(@"Infinit Installer", nil);
+  _code = [[IICodeFinder sharedInstance] getCode];
+  if ([self.window respondsToSelector:@selector(titlebarAppearsTransparent)])
+    self.window.titlebarAppearsTransparent = YES;
+  else
+    self.window.title = NSLocalizedString(@"Infinit Installer", nil);
   [[self.window standardWindowButton:NSWindowMiniaturizeButton] setHidden:YES];
   [[self.window standardWindowButton:NSWindowZoomButton] setHidden:YES];
   self.tagline_label.attributedStringValue =
@@ -168,9 +171,14 @@
 
 - (void)ensureDeviceId
 {
-  NSString* infinit_dir_path = [NSHomeDirectory() stringByAppendingPathComponent:@".infinit"];
+  const char* data = getenv("INFINIT_HOME");
+  NSString* infinit_dir_path;
+  if (data != NULL && data[0] != '\0')
+    infinit_dir_path = [NSString stringWithUTF8String:data];
+  if (infinit_dir_path.length == 0)
+    infinit_dir_path = [NSHomeDirectory() stringByAppendingPathComponent:@".infinit"];
   BOOL have_infinit_dir =
-  [[NSFileManager defaultManager] fileExistsAtPath:infinit_dir_path isDirectory:nil];
+    [[NSFileManager defaultManager] fileExistsAtPath:infinit_dir_path isDirectory:nil];
   if (!have_infinit_dir)
   {
     [[NSFileManager defaultManager] createDirectoryAtPath:infinit_dir_path
@@ -359,11 +367,13 @@
 
   NSString* pid = [NSString stringWithFormat:@"%d", [[NSProcessInfo processInfo] processIdentifier]];
 
-  NSArray* arguments = @[pid, app_path];
+  NSMutableArray* arguments = [NSMutableArray arrayWithArray:@[pid, app_path]];
+  if (self.code.length)
+    [arguments addObject:self.code];
 
   [NSTask launchedTaskWithLaunchPath:finisher_path arguments:arguments];
   // Wait for metrics to be sent.
-  [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:1.5];
+  [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:1.5f];
 }
 
 - (void)displayErrorMessage:(NSString*)message
@@ -376,7 +386,7 @@
   {
     [self.progress_bar stopAnimation:nil];
     self.progress_bar.indeterminate = NO;
-    self.progress_bar.doubleValue = 1.0;
+    self.progress_bar.doubleValue = 1.0f;
   }
 }
 
