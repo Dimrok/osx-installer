@@ -12,14 +12,14 @@
 #define INFINIT_APP_FALLBACK_PATH @"~/Applications/Infinit.app"
 
 @interface InfinitTerminationListener : NSObject
-{
-@private
-  pid_t _parent_pid;
-  NSString* _install_path;
-}
 
 - (id)initWithParentProcessID:(pid_t)ppid
-              installLocation:(NSString*)install_path;
+              installLocation:(NSString*)install_path
+                         code:(NSString*)code;
+
+@property (nonatomic, readonly) NSString* code;
+@property (nonatomic, readonly) NSString* install_path;
+@property (nonatomic, unsafe_unretained) pid_t parent_pid;
 
 @end
 
@@ -27,11 +27,13 @@
 
 - (id)initWithParentProcessID:(pid_t)ppid
               installLocation:(NSString*)install_path
+                         code:(NSString*)code
 {
   if ((self = [super init]))
   {
     _parent_pid = ppid;
-    _install_path = [install_path copy];
+    _install_path = install_path;
+    _code = code;
 
     BOOL already_terminated = (getppid() == 1); // ppid is launchd (1) => parent terminated already
 
@@ -41,10 +43,12 @@
     }
     else
     {
-      [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
-                                                             selector:@selector(applicationDidTerminate:)
-                                                                 name:NSWorkspaceDidTerminateApplicationNotification
-                                                               object:nil];
+      NSNotificationCenter* notification_center =
+        [[NSWorkspace sharedWorkspace] notificationCenter];
+      [notification_center addObserver:self
+                              selector:@selector(applicationDidTerminate:)
+                                  name:NSWorkspaceDidTerminateApplicationNotification
+                                object:nil];
     }
   }
   return self;
@@ -84,17 +88,34 @@
                                                  attributes:nil
                                                       error:&error];
       if (error)
+      {
         NSLog(@"Unable to create ~/Applications directory: %@", error);
+        error = nil;
+      }
     }
   }
 
   if ([mgr fileExistsAtPath:destination_path])
     [mgr removeItemAtPath:destination_path error:&error];
+  if (error)
+  {
+    NSLog(@"Unable to remove existing application: %@", destination_path);
+    error = nil;
+  }
 
   [mgr copyItemAtPath:_install_path toPath:destination_path error:&error];
-
-  [[NSWorkspace sharedWorkspace] launchApplication:destination_path];
-
+  if (error)
+  {
+    NSLog(@"Unable to copy to destination: %@", destination_path);
+    error = nil;
+  }
+  NSURL* app_url = [NSURL fileURLWithPath:destination_path];
+  NSString* code = self.code.length ? self.code : @"";
+  NSDictionary* config = @{NSWorkspaceLaunchConfigurationArguments: @[@"code", code]};
+  [[NSWorkspace sharedWorkspace] launchApplicationAtURL:app_url
+                                                options:NSWorkspaceLaunchDefault 
+                                          configuration:config
+                                                  error:nil];
   BOOL mounted_dmg = NO;
 
   NSArray* keys = [NSArray arrayWithObjects:NSURLVolumeNameKey, NSURLVolumeIsRemovableKey, nil];
@@ -126,7 +147,7 @@
     [eject_script executeAndReturnError:nil];
   }
 
-  [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:0.0];
+  [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:0.0f];
 }
 
 - (void)dealloc
@@ -137,33 +158,36 @@
 @end
 
 
-int main(int argc, const char * argv[])
+int main(int argc, const char* argv[])
 {
   int status = EXIT_SUCCESS;
   @autoreleasepool
   {
-    if (argc == 3)
+    NSString* code = nil;
+    if (argc == 4)
     {
-      pid_t parent_pid = atoi(argv[1]);
-      NSString* app_path = [NSString stringWithUTF8String:argv[2]];
-      BOOL app_exists = [[NSFileManager defaultManager] fileExistsAtPath:app_path];
+      code = [NSString stringWithUTF8String:argv[3]];
+    }
+    else if (argc != 3)
+    {
+      NSLog(@"%s invalid number of arguments.", argv[0]);
+      status = EXIT_FAILURE;
+    }
+    pid_t parent_pid = atoi(argv[1]);
+    NSString* app_path = [NSString stringWithUTF8String:argv[2]];
+    BOOL app_exists = [[NSFileManager defaultManager] fileExistsAtPath:app_path];
 
-      if (parent_pid != 0 && app_exists)
-      {
-        InfinitTerminationListener* listener;
-        listener = [[InfinitTerminationListener alloc] initWithParentProcessID:parent_pid
-                                                               installLocation:app_path];
-        [[NSApplication sharedApplication] run];
-      }
-      else
-      {
-        NSLog(@"%s invalid arguments.", argv[0]);
-        status = EXIT_FAILURE;
-      }
+    if (parent_pid != 0 && app_exists)
+    {
+      InfinitTerminationListener* listener;
+      listener = [[InfinitTerminationListener alloc] initWithParentProcessID:parent_pid
+                                                             installLocation:app_path
+                                                                        code:code];
+      [[NSApplication sharedApplication] run];
     }
     else
     {
-      NSLog(@"%s invalid number of arguments.", argv[0]);
+      NSLog(@"%s invalid arguments.", argv[0]);
       status = EXIT_FAILURE;
     }
   }
