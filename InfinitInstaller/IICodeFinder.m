@@ -24,7 +24,6 @@ static dispatch_once_t _instance_token = 0;
   NSCAssert(_instance == nil, @"Use sharedInstance.");
   if (self = [super init])
   {
-
   }
   return self;
 }
@@ -41,7 +40,6 @@ static dispatch_once_t _instance_token = 0;
 - (NSString*)dmgPath
 {
   NSString* volume_path = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
-//  NSString* volume_path = @"/Volumes/Infinit";
   DASessionRef session = DASessionCreate(kCFAllocatorDefault);
   CFURLRef path_url = (__bridge CFURLRef)[NSURL URLWithString:volume_path];
   DADiskRef disk = DADiskCreateFromVolumePath(kCFAllocatorDefault, session, path_url);
@@ -49,6 +47,17 @@ static dispatch_once_t _instance_token = 0;
   if (!disk)
   {
     NSLog(@"Not in mounted volume");
+#ifndef DEBUG
+    NSString* title = NSLocalizedString(@"Launch the installer from the Disk Image", nil);
+    NSString* message = NSLocalizedString(@"Reopen the installer from the Disk Image you downloaded and launch it from there.", nil);
+    NSAlert* alert = [NSAlert alertWithMessageText:title
+                                     defaultButton:NSLocalizedString(@"OK", nil)
+                                   alternateButton:nil
+                                       otherButton:nil
+                         informativeTextWithFormat:@"%@", message];
+    [alert runModal];
+    exit(0);
+#endif
     return nil;
   }
   io_service_t service = DADiskCopyIOMedia(disk);
