@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E17e" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="IIOnboardingViewController6">
+            <connections>
+                <outlet property="android_button" destination="0eb-Bw-hMd" id="IkG-z1-fRG"/>
+                <outlet property="apple_button" destination="Ec4-Vr-Jlg" id="Jrg-ck-G8X"/>
+                <outlet property="info_label" destination="7de-p4-gaK" id="kMt-0y-nI8"/>
+                <outlet property="ios_button" destination="D2l-ok-u3W" id="lSE-Nl-ozq"/>
+                <outlet property="progress_indicator" destination="Feh-y1-SCJ" id="af0-cI-b5P"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+                <outlet property="windows_button" destination="zJB-4l-5Vw" id="ODb-WV-yYW"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY" customClass="IIWhiteView">
+            <rect key="frame" x="0.0" y="0.0" width="740" height="550"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lkf-99-zhp">
+                    <rect key="frame" x="299" y="435" width="143" height="80"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="onboarding-logo" id="3G2-QJ-NCn"/>
+                </imageView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7de-p4-gaK">
+                    <rect key="frame" x="192" y="306" width="357" height="39"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Infinit is still downloading..." id="Pp1-zB-jkP">
+                        <font key="font" size="32" name="HelveticaNeue-Thin"/>
+                        <color key="textColor" red="0.31764705879999999" green="0.31764705879999999" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <progressIndicator maxValue="1" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="Feh-y1-SCJ" customClass="IIProgressIndicator">
+                    <rect key="frame" x="149" y="255" width="442" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="442" id="DQY-4S-4pF"/>
+                    </constraints>
+                </progressIndicator>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WDJ-DQ-djc">
+                    <rect key="frame" x="190" y="141" width="361" height="25"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Infinit is also available on Windows, iOS and Android." id="u5X-EM-ok0">
+                        <font key="font" size="16" name="SourceSansPro-Regular"/>
+                        <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ec4-Vr-Jlg" customClass="IIHoverImageButton">
+                    <rect key="frame" x="270" y="93" width="35" height="35"/>
+                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="onboarding-icon-apple" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="WrX-RE-TVx">
+                        <behavior key="behavior" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="buttonClicked:" target="-2" id="UBk-Zz-fse"/>
+                    </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zJB-4l-5Vw" customClass="IIHoverImageButton">
+                    <rect key="frame" x="325" y="93" width="35" height="35"/>
+                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="onboarding-icon-windows" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="HBJ-0Z-PHN">
+                        <behavior key="behavior" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="buttonClicked:" target="-2" id="Hqo-qm-O00"/>
+                    </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D2l-ok-u3W" customClass="IIHoverImageButton">
+                    <rect key="frame" x="380" y="93" width="35" height="35"/>
+                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="onboarding-icon-ios" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="TZO-SO-syi">
+                        <behavior key="behavior" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="buttonClicked:" target="-2" id="oVg-yG-kQM"/>
+                    </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0eb-Bw-hMd" customClass="IIHoverImageButton">
+                    <rect key="frame" x="436" y="93" width="35" height="35"/>
+                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="onboarding-icon-android" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="SCI-NH-jSg">
+                        <behavior key="behavior" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="buttonClicked:" target="-2" id="e1e-Rt-0Dt"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="WDJ-DQ-djc" firstAttribute="top" secondItem="Feh-y1-SCJ" secondAttribute="bottom" constant="90" id="32l-Be-veo"/>
+                <constraint firstAttribute="centerX" secondItem="Feh-y1-SCJ" secondAttribute="centerX" id="4lu-li-RJa"/>
+                <constraint firstAttribute="centerX" secondItem="Lkf-99-zhp" secondAttribute="centerX" id="F30-ni-Azu"/>
+                <constraint firstAttribute="centerX" secondItem="7de-p4-gaK" secondAttribute="centerX" id="MDb-ba-v54"/>
+                <constraint firstAttribute="centerX" secondItem="WDJ-DQ-djc" secondAttribute="centerX" id="WYg-0Q-cAU"/>
+                <constraint firstItem="Lkf-99-zhp" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="35" id="YR8-hZ-3mR"/>
+                <constraint firstItem="Feh-y1-SCJ" firstAttribute="top" secondItem="7de-p4-gaK" secondAttribute="bottom" constant="32" id="lZ0-P3-gbD"/>
+                <constraint firstItem="7de-p4-gaK" firstAttribute="top" secondItem="Lkf-99-zhp" secondAttribute="bottom" constant="90" id="yKI-Sh-2hL"/>
+            </constraints>
+        </customView>
+    </objects>
+    <resources>
+        <image name="onboarding-icon-android" width="23" height="28"/>
+        <image name="onboarding-icon-apple" width="21" height="25"/>
+        <image name="onboarding-icon-ios" width="25" height="25"/>
+        <image name="onboarding-icon-windows" width="26" height="26"/>
+        <image name="onboarding-logo" width="143" height="80"/>
+    </resources>
+</document>
