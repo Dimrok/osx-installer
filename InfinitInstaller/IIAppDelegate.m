@@ -7,8 +7,19 @@
 //
 
 #import "IIAppDelegate.h"
+
 #import "IICodeFinder.h"
 #import "IIMetricsReporter.h"
+#import "IIOnboardingButtonCell.h"
+#import "IIOnboardingViewController1.h"
+#import "IIOnboardingViewController2.h"
+#import "IIOnboardingViewController3.h"
+#import "IIOnboardingViewController4.h"
+#import "IIOnboardingViewController5.h"
+#import "IIOnboardingViewController6.h"
+#import "IIOnboardingProgressView.h"
+
+#import "InfinitColor.h"
 
 #import "SUCodeSigningVerifier.h"
 
@@ -17,24 +28,48 @@
 #define INFINIT_FINISHER_PATH @"InfinitInstallFinisher.app/Contents/MacOS/InfinitInstallFinisher"
 #define INFINIT_BUNDLE_IDENTIFIER @"io.infinit.InfinitApplication"
 
-#define INFINIT_VIDEO_PLAYS 2
+#ifdef DEBUG
+# define SKIP_CODE_SIGNATURE_VALIDATION
+#endif
 
-//#define SKIP_CODE_SIGNATURE_VALIDATION
+@interface IIAppDelegate () <IIOnboardingViewController6Protocol,
+                             NSApplicationDelegate,
+                             SUUnarchiverDelegate>
 
-@interface IIAppDelegate ()
+@property (nonatomic, weak) IBOutlet NSButton* back_button;
+@property (nonatomic, weak) IBOutlet NSButton* next_button;
+@property (nonatomic, weak) IBOutlet NSView* onboarding_view;
+@property (nonatomic, weak) IBOutlet IIOnboardingProgressView* progress_view;
+@property (nonatomic, weak) IBOutlet NSWindow* window;
 
+@property (nonatomic, strong) AFHTTPClient* client;
 @property (nonatomic, readonly) NSString* code;
 @property (nonatomic, readonly) NSString* device_id;
-@property (nonatomic, readonly) NSRunningApplication* running_infinit;
-@property (nonatomic, readonly) NSDictionary* tagline_attrs;
-@property (nonatomic, readonly) NSDictionary* instruction_attrs;
-@property (nonatomic, readonly) NSDictionary* status_attrs;
+@property (nonatomic, readonly) double download_progress;
 @property (nonatomic, readonly) NSString* launch_app_path;
-@property (atomic, readonly) BOOL finishing;
+@property (atomic, readwrite) BOOL reached_final;
+@property (atomic, readwrite) BOOL ready_to_install;
+@property (nonatomic, readonly) NSRunningApplication* running_infinit;
+@property (nonatomic, strong) SUDiskImageUnarchiver* unarchiver;
+
+@property (nonatomic, readonly) IIOnboardingAbstractViewController* current_onboarding;
+@property (nonatomic, readonly) IIOnboardingViewController1* onboarding_1;
+@property (nonatomic, readonly) IIOnboardingViewController2* onboarding_2;
+@property (nonatomic, readonly) IIOnboardingViewController3* onboarding_3;
+@property (nonatomic, readonly) IIOnboardingViewController4* onboarding_4;
+@property (nonatomic, readonly) IIOnboardingViewController5* onboarding_5;
+@property (nonatomic, readonly) IIOnboardingViewController6* onboarding_6;
 
 @end
 
 @implementation IIAppDelegate
+
+@synthesize onboarding_1 = _onboarding_1;
+@synthesize onboarding_2 = _onboarding_2;
+@synthesize onboarding_3 = _onboarding_3;
+@synthesize onboarding_4 = _onboarding_4;
+@synthesize onboarding_5 = _onboarding_5;
+@synthesize onboarding_6 = _onboarding_6;
 
 - (id)init
 {
@@ -46,44 +81,10 @@
                             selector:@selector(anApplicationTerminated:)
                                 name:NSWorkspaceDidTerminateApplicationNotification
                               object:nil];
-    NSMutableParagraphStyle* centered_style =
-      [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-    centered_style.alignment = NSCenterTextAlignment;
-    NSFont* tagline_font = [NSFont fontWithName:@"Montserrat" size:19.0];
-    NSFont* status_font = [NSFont fontWithName:@"Montserrat" size:14.0];
-    _tagline_attrs = @{NSFontAttributeName: tagline_font,
-                       NSParagraphStyleAttributeName: centered_style,
-                       NSForegroundColorAttributeName: [self colourR:60 G:60 B:60 A:1.0]};
-    _status_attrs = @{NSFontAttributeName: status_font,
-                      NSParagraphStyleAttributeName: centered_style,
-                      NSForegroundColorAttributeName: [self colourR:165 G:165 B:165 A:1.0]};
-
-    NSFont* instruction_font = [[NSFontManager sharedFontManager] fontWithFamily:@"Helvetica Neue"
-                                                                          traits:NSUnboldFontMask
-                                                                          weight:3
-                                                                            size:20.0];
-    NSMutableParagraphStyle* instruction_para =
-      [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-    instruction_para.alignment = NSCenterTextAlignment;
-    instruction_para.lineSpacing = 8.0;
-    _instruction_attrs = @{NSFontAttributeName: instruction_font,
-                           NSParagraphStyleAttributeName: instruction_para,
-                           NSForegroundColorAttributeName: [self colourR:60 G:60 B:60 A:1.0]};
     _launch_app_path = nil;
-    _finishing = NO;
+    self.ready_to_install = NO;
   }
   return self;
-}
-
-- (NSColor*)colourR:(NSUInteger)red
-                  G:(NSUInteger)green
-                  B:(NSUInteger)blue
-                  A:(CGFloat)alpha
-{
-  return [NSColor colorWithDeviceRed:(((CGFloat)red)/255.0)
-                               green:(((CGFloat)green)/255.0)
-                                blue:(((CGFloat)blue)/255.0)
-                               alpha:alpha];
 }
 
 - (void)dealloc
@@ -91,42 +92,33 @@
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
-- (void)setStatusLabelString:(NSString*)str
-{
-  self.status_label.attributedStringValue =
-    [[NSAttributedString alloc] initWithString:str
-                                    attributes:_status_attrs];
-}
-
 - (void)applicationDidFinishLaunching:(NSNotification*)aNotification
 {
+  NSColor* text_color = [NSColor whiteColor];
+  NSMutableAttributedString* back_str = [self.back_button.attributedTitle mutableCopy];
+  [back_str addAttribute:NSForegroundColorAttributeName
+                   value:text_color
+                   range:NSMakeRange(0, back_str.string.length)];
+  self.back_button.attributedTitle = back_str;
+  ((IIOnboardingButtonCell*)self.back_button.cell).background_color =
+  [InfinitColor colorWithGray:216];
+  NSMutableAttributedString* next_str = [self.next_button.attributedTitle mutableCopy];
+  [next_str addAttribute:NSForegroundColorAttributeName
+                   value:text_color
+                   range:NSMakeRange(0, next_str.length)];
+  self.next_button.attributedTitle = next_str;
+  ((IIOnboardingButtonCell*)self.next_button.cell).background_color =
+    [InfinitColor colorFromPalette:InfinitPaletteColorBurntSienna];
+  self.window.title = NSLocalizedString(@"Infinit", nil);
+  [self.window standardWindowButton:NSWindowMiniaturizeButton].hidden =YES;
+  [self.window standardWindowButton:NSWindowZoomButton].hidden = YES;
+  [self showOnboardingController:self.onboarding_1 animated:NO reverse:NO];
+
   _code = [[IICodeFinder sharedInstance] getCode];
-  if ([self.window respondsToSelector:@selector(titlebarAppearsTransparent)])
-    self.window.titlebarAppearsTransparent = YES;
-  else
-    self.window.title = NSLocalizedString(@"Infinit Installer", nil);
-  [[self.window standardWindowButton:NSWindowMiniaturizeButton] setHidden:YES];
-  [[self.window standardWindowButton:NSWindowZoomButton] setHidden:YES];
-  self.tagline_label.attributedStringValue =
-    [[NSAttributedString alloc] initWithString:NSLocalizedString(@"WELCOME TO INFINIT", nil)
-                                    attributes:_tagline_attrs];
-  NSString* instructions = NSLocalizedString(@"Send any file with\n a quick drag and drop.", nil);
-  self.instruction_label.attributedStringValue =
-    [[NSAttributedString alloc] initWithString:instructions attributes:_instruction_attrs];
-  [self setStatusLabelString:NSLocalizedString(@"DOWNLOADING...", nil)];
   [self ensureDeviceId];
   [IIMetricsReporter sendMetric:INFINIT_METRIC_START_INSTALL];
 
-  self.video_view.delegate = self;
-  self.video_view.url =
-    [[NSBundle mainBundle] URLForResource:@"tutorial_send_2" withExtension:@"mp4"];
-
-  [self.video_view performSelector:@selector(play) withObject:nil afterDelay:3.0];
-
   self.window.level = NSFloatingWindowLevel;
-
-  self.progress_bar.indeterminate = YES;
-  [self.progress_bar startAnimation:nil];
 
   _running_infinit = nil;
 
@@ -172,7 +164,7 @@
 - (void)ensureDeviceId
 {
   const char* data = getenv("INFINIT_HOME");
-  NSString* infinit_dir_path;
+  NSString* infinit_dir_path = nil;
   if (data != NULL && data[0] != '\0')
     infinit_dir_path = [NSString stringWithUTF8String:data];
   if (infinit_dir_path.length == 0)
@@ -189,18 +181,18 @@
   NSString* device_id_path = [infinit_dir_path stringByAppendingPathComponent:@"device.uuid"];
   BOOL have_device_id = [[NSFileManager defaultManager] fileExistsAtPath:device_id_path
                                                              isDirectory:nil];
+  NSCharacterSet* whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
   BOOL make_device_id = NO;
   if (have_device_id)
   {
     _device_id = [NSString stringWithContentsOfFile:device_id_path
                                            encoding:NSUTF8StringEncoding
                                               error:nil];
-    _device_id =
-      [_device_id stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (_device_id.length == 0)
+    _device_id = [self.device_id stringByTrimmingCharactersInSet:whitespace];
+    if (!self.device_id.length)
       make_device_id = YES;
     else
-      NSLog(@"Read device_id: %@", _device_id);
+      NSLog(@"Read device_id: %@", self.device_id);
   }
   else
   {
@@ -209,55 +201,50 @@
   if (make_device_id)
   {
     _device_id = [[[NSUUID UUID] UUIDString] lowercaseString];
-    [_device_id writeToFile:device_id_path
-                 atomically:YES
-                   encoding:NSUTF8StringEncoding
-                      error:nil];
-    NSLog(@"Made device_id: %@", _device_id);
+    [self.device_id writeToFile:device_id_path
+                     atomically:YES
+                       encoding:NSUTF8StringEncoding
+                          error:nil];
+    NSLog(@"Made device_id: %@", self.device_id);
   }
-  _device_id =
-    [[_device_id stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
-  [IIMetricsReporter setDeviceId:_device_id];
+  _device_id = [self.device_id stringByTrimmingCharactersInSet:whitespace].lowercaseString;
+  [IIMetricsReporter setDeviceId:self.device_id];
 }
 
 - (void)beginInstall
 {
   [AFKissXMLRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"application/rss+xml"]];
 
-  self.client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:INFINIT_BASE_URL]];
+  self.client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:INFINIT_BASE_URL]];
   self.client.stringEncoding = NSUTF8StringEncoding;
   [self.client registerHTTPOperationClass:[AFKissXMLRequestOperation class]];
   [self.client getPath:@"sparkle-cast.xml"
             parameters:nil
                success:^(AFHTTPRequestOperation* operation, id XML)
-   {
+  {
+    NSError* error = nil;
+    NSArray* items = [XML nodesForXPath:@"//enclosure" error:&error];
+    NSString* latest_version_url = nil;
+    NSInteger latest_version_number = 0;
 
-     NSError* error = nil;
-     NSArray* items = [XML nodesForXPath:@"//enclosure" error:&error];
+    for (DDXMLElement* item in items)
+    {
+      NSString* version_str = [item attributeForName:@"sparkle:version"].stringValue;
+      NSInteger version_num =
+        [version_str stringByReplacingOccurrencesOfString:@"." withString:@""].intValue;
+      if (version_num > latest_version_number)
+      {
+        latest_version_number = version_num;
+        latest_version_url = [item attributeForName:@"url"].stringValue;
+      }
+    }
+    [self startDownloadingLatestBuildAtURL:[NSURL URLWithString:latest_version_url]];
+  } failure:^(AFHTTPRequestOperation* operation, NSError* error)
+  {
+    [self showErrorTitle:NSLocalizedString(@"Unable to fetch Infinit.dmg", nil)
+                 message:NSLocalizedString(@"Please check your Internet connection and relaunch the installer. If this issue persists, contact support@infinit.io.", nil)];
 
-     NSString* latest_version_url = nil;
-     NSInteger latest_version_number = 0;
-
-     for (DDXMLElement* item in items)
-     {
-
-       NSString* version_str = [[item attributeForName:@"sparkle:version"] stringValue];
-       NSInteger version_num =
-       [[version_str stringByReplacingOccurrencesOfString:@"." withString:@""] intValue];
-
-       if (version_num > latest_version_number)
-       {
-         latest_version_number = version_num;
-         latest_version_url = [[item attributeForName:@"url"] stringValue];
-       }
-     }
-
-     [self startDownloadingLatestBuildAtURL:[NSURL URLWithString:latest_version_url]];
-   }
-               failure:^(AFHTTPRequestOperation* operation, NSError* error)
-   {
-     [self displayErrorMessage:[error localizedDescription] withTitle:@"Appcast Error"];
-   }];
+  }];
 }
 
 - (void)startDownloadingLatestBuildAtURL:(NSURL*)url
@@ -267,7 +254,7 @@
   NSLog(@"Downloading %@", url);
   [IIMetricsReporter sendMetric:INFINIT_METRIC_START_DOWNLOAD];
 
-  NSString* uuid = [[NSUUID UUID] UUIDString];
+  NSString* uuid = [NSUUID UUID].UUIDString;
   NSString* temp_path = [NSTemporaryDirectory() stringByAppendingString:uuid];
 
   [[NSFileManager defaultManager] createDirectoryAtPath:temp_path
@@ -285,24 +272,23 @@
 
   AFHTTPRequestOperation* download = [[AFHTTPRequestOperation alloc] initWithRequest:request];
   download.outputStream = output_stream;
-  [download setDownloadProgressBlock:^(NSUInteger bytes_read, long long total_bytes_read, long long total_bytes_expected)
+  [download setDownloadProgressBlock:^(NSUInteger bytes_read,
+                                       long long total_bytes_read,
+                                       long long total_bytes_expected)
   {
-    self.progress_bar.doubleValue = (double)total_bytes_read / (double)total_bytes_expected;
+    _download_progress = (double)total_bytes_read / (double)total_bytes_expected;
   }];
   [download setCompletionBlockWithSuccess:^(AFHTTPRequestOperation* operation, id responseObject)
   {
-    if (_running_infinit)
-      [self ensureOldInfinitKilled:_running_infinit];
+    if (self.running_infinit)
+      [self ensureOldInfinitKilled:self.running_infinit];
     [IIMetricsReporter sendMetric:INFINIT_METRIC_FINISH_DOWNLOAD];
     [self extractDMGArchiveAtPath:local_file_path];
-  }
-                                  failure:^(AFHTTPRequestOperation* operation, NSError* error)
+  } failure:^(AFHTTPRequestOperation* operation, NSError* error)
   {
-    [self displayErrorMessage:error.localizedDescription withTitle:@"Download Error"];
+    [self showErrorTitle:NSLocalizedString(@"Unable to fetch Infinit.dmg", nil)
+                 message:NSLocalizedString(@"Please check your Internet connection and relaunch the installer. If this issue persists, contact support@infinit.io.", nil)];
   }];
-  [self.progress_bar stopAnimation:nil];
-  self.progress_bar.indeterminate = NO;
-  self.progress_bar.doubleValue = 0.0;
   [download start];
 }
 
@@ -312,13 +298,6 @@
   {
     self.unarchiver = [SUDiskImageUnarchiver unarchiverForPath:file_path];
     self.unarchiver.delegate = self;
-
-
-    [self setStatusLabelString:NSLocalizedString(@"INSTALLING...", nil)];
-
-    self.progress_bar.indeterminate = YES;
-    [self.progress_bar startAnimation:nil];
-
     [self.unarchiver start];
   }
 }
@@ -336,8 +315,8 @@
   BOOL valid_codesign = [SUCodeSigningVerifier codeSignatureIsValidAtPath:app_path error:&error];
   if (!valid_codesign)
   {
-    [self displayErrorMessage:error.localizedDescription
-                    withTitle:NSLocalizedString(@"Verification Error", nil)];
+    [self showErrorTitle:NSLocalizedString(@"Infinit not signed correctly", nil)
+                 message:NSLocalizedString(@"The downloaded version of Infinit was not signed correctly. Try to relaunch the installer or contact support@infinit.io.", nil)];
     NSLog(@"Code sign error: %@", error.localizedDescription);
   }
 #endif
@@ -345,57 +324,248 @@
   {
     [IIMetricsReporter sendMetric:INFINIT_METRIC_FINISH_INSTALL];
     _launch_app_path = [app_path copy];
-    if (self.video_view.play_count >= INFINIT_VIDEO_PLAYS)
-      [self startFinisherProcessWithAppPath:app_path];
+    self.ready_to_install = YES;
+    if (self.reached_final)
+      [self startFinisherProcess];
   }
 }
 
 - (void)unarchiverDidFail:(SUUnarchiver*)unarchiver_
 {
-  [self displayErrorMessage:NSLocalizedString(@"Unable to extract DMG file.", nil)
-                  withTitle:NSLocalizedString(@"Extract Error", nil)];
+  [self showErrorTitle:NSLocalizedString(@"Unable to extract Infinit", nil)
+               message:NSLocalizedString(@"Unable to extract Infinit. Please relaunch the installer to try again. If this issue persists, contact support@infinit.io.", nil)];
 }
 
-- (void)startFinisherProcessWithAppPath:(NSString*)app_path
+- (void)startFinisherProcess
 {
-  if (_finishing)
+  if (!self.ready_to_install)
     return;
-  [self.video_view pause];
-  _finishing = YES;
-  NSString* finisher_path =
-    [[[NSBundle mainBundle] sharedSupportPath] stringByAppendingPathComponent:INFINIT_FINISHER_PATH];
-
-  NSString* pid = [NSString stringWithFormat:@"%d", [[NSProcessInfo processInfo] processIdentifier]];
-
-  NSMutableArray* arguments = [NSMutableArray arrayWithArray:@[pid, app_path]];
-  if (self.code.length)
-    [arguments addObject:self.code];
-
-  [NSTask launchedTaskWithLaunchPath:finisher_path arguments:arguments];
-  // Wait for metrics to be sent.
-  [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:1.5f];
-}
-
-- (void)displayErrorMessage:(NSString*)message
-                  withTitle:(NSString*)title
-{
-  NSString* error_msg = [NSString stringWithFormat:@"%@ - %@", title, message];
-  [self setStatusLabelString:error_msg.uppercaseString];
-
-  if (self.progress_bar.isIndeterminate)
+  static dispatch_once_t _install_token = 0;
+  dispatch_once(&_install_token, ^
   {
-    [self.progress_bar stopAnimation:nil];
-    self.progress_bar.indeterminate = NO;
-    self.progress_bar.doubleValue = 1.0f;
-  }
+    NSString* finisher_path =
+      [[NSBundle mainBundle].sharedSupportPath stringByAppendingPathComponent:INFINIT_FINISHER_PATH];
+
+    NSString* pid = [NSString stringWithFormat:@"%d", [NSProcessInfo processInfo].processIdentifier];
+
+    NSMutableArray* arguments = [NSMutableArray arrayWithArray:@[pid, self.launch_app_path]];
+    if (self.code.length)
+      [arguments addObject:self.code];
+
+    [NSTask launchedTaskWithLaunchPath:finisher_path arguments:arguments];
+    // Wait for metrics to be sent.
+    [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:1.5f];
+  });
 }
 
-//- Video Player Protocol --------------------------------------------------------------------------
+#pragma mark - Button Handling
 
-- (void)finishedPlayOfVideo:(IIVideoPlayerView*)sender
+- (IBAction)backClicked:(id)sender
 {
-  if (_launch_app_path && self.video_view.play_count >= INFINIT_VIDEO_PLAYS)
-    [self startFinisherProcessWithAppPath:_launch_app_path];
+  IIOnboardingAbstractViewController* last_controller = nil;
+  switch (self.current_onboarding.screen_number)
+  {
+    case 2:
+      last_controller = self.onboarding_1;
+      break;
+    case 3:
+      last_controller = self.onboarding_2;
+      break;
+    case 4:
+      last_controller = self.onboarding_3;
+      break;
+    case 5:
+      last_controller = self.onboarding_4;
+      break;
+    case 6:
+      last_controller = self.onboarding_5;
+      break;
+
+    default:
+      return;
+  }
+  if (last_controller)
+    [self showOnboardingController:last_controller animated:YES reverse:YES];
+}
+
+- (IBAction)nextClicked:(id)sender
+{
+  IIOnboardingAbstractViewController* next_controller = nil;
+  switch (self.current_onboarding.screen_number)
+  {
+    case 1:
+      next_controller = self.onboarding_2;
+      break;
+    case 2:
+      next_controller = self.onboarding_3;
+      break;
+    case 3:
+      next_controller = self.onboarding_4;
+      break;
+    case 4:
+      next_controller = self.onboarding_5;
+      break;
+    case 5:
+      if (self.ready_to_install)
+      {
+        self.back_button.enabled = NO;
+        self.next_button.enabled = NO;
+        [self startFinisherProcess];
+        return;
+      }
+      else
+      {
+        next_controller = self.onboarding_6;
+        break;
+      }
+
+    default:
+      return;
+  }
+  if (next_controller)
+    [self showOnboardingController:next_controller animated:YES reverse:NO];
+}
+
+#pragma mark - Onboarding Animations
+
+- (void)showOnboardingController:(IIOnboardingAbstractViewController*)controller
+                        animated:(BOOL)animate
+                         reverse:(BOOL)reverse
+{
+  if (controller == self.current_onboarding)
+    return;
+  IIOnboardingAbstractViewController* old_onboarding = self.current_onboarding;
+  _current_onboarding = controller;
+  self.progress_view.progress_count = controller.screen_number;
+  self.back_button.hidden = (controller.screen_number == 1);
+  self.next_button.hidden = (controller.screen_number == 6);
+  self.progress_view.hidden = (controller.screen_number == 6);
+  if (controller.final_screen)
+    self.reached_final = YES;
+  if (old_onboarding)
+    [old_onboarding aboutToAnimate];
+  if (!animate)
+  {
+    [self.onboarding_view addSubview:controller.view];
+    if (old_onboarding)
+      [old_onboarding.view removeFromSuperview];
+    [controller finishedAnimate];
+    return;
+  }
+  [self.onboarding_view addSubview:controller.view
+                        positioned:NSWindowAbove
+                        relativeTo:old_onboarding.view];
+  controller.view.alphaValue = 0.0f;
+  CGFloat dx = self.onboarding_view.bounds.size.width;
+  if (reverse)
+    dx = -dx;
+  controller.view.frame = NSMakeRect(dx,
+                                     0.0f,
+                                     controller.view.bounds.size.width,
+                                     controller.view.bounds.size.height);
+  [NSAnimationContext runAnimationGroup:^(NSAnimationContext* context)
+  {
+    context.duration = 0.5f;
+    if (old_onboarding)
+    {
+      old_onboarding.view.animator.alphaValue = 0.0f;
+      old_onboarding.view.animator.frame = NSMakeRect(-dx,
+                                                      0.0f,
+                                                      controller.view.bounds.size.width,
+                                                      controller.view.bounds.size.height);
+    }
+    controller.view.animator.alphaValue = 1.0f;
+    controller.view.animator.frame = self.onboarding_view.bounds;
+  } completionHandler:^
+  {
+    if (old_onboarding)
+      [old_onboarding.view removeFromSuperview];
+    [controller finishedAnimate];
+  }];
+}
+
+#pragma mark - Progress Delegate
+
+- (double)currentDownloadProgress
+{
+  return self.download_progress;
+}
+
+#pragma mark - Lazy Loaders
+
+- (IIOnboardingViewController1*)onboarding_1
+{
+  if (!_onboarding_1)
+  {
+    NSString* name = NSStringFromClass(IIOnboardingViewController1.class);
+    _onboarding_1 = [[IIOnboardingViewController1 alloc] initWithNibName:name bundle:nil];
+  }
+  return _onboarding_1;
+}
+
+- (IIOnboardingViewController2*)onboarding_2
+{
+  if (!_onboarding_2)
+  {
+    NSString* name = NSStringFromClass(IIOnboardingVideoAbstractViewController.class);
+    _onboarding_2 = [[IIOnboardingViewController2 alloc] initWithNibName:name bundle:nil];
+  }
+  return _onboarding_2;
+}
+
+- (IIOnboardingViewController3*)onboarding_3
+{
+  if (!_onboarding_3)
+  {
+    NSString* name = NSStringFromClass(IIOnboardingVideoAbstractViewController.class);
+    _onboarding_3 = [[IIOnboardingViewController3 alloc] initWithNibName:name bundle:nil];
+  }
+  return _onboarding_3;
+}
+
+- (IIOnboardingViewController4*)onboarding_4
+{
+  if (!_onboarding_4)
+  {
+    NSString* name = NSStringFromClass(IIOnboardingVideoAbstractViewController.class);
+    _onboarding_4 = [[IIOnboardingViewController4 alloc] initWithNibName:name bundle:nil];
+  }
+  return _onboarding_4;
+}
+
+- (IIOnboardingViewController5*)onboarding_5
+{
+  if (!_onboarding_5)
+  {
+    NSString* name = NSStringFromClass(IIOnboardingVideoAbstractViewController.class);
+    _onboarding_5 = [[IIOnboardingViewController5 alloc] initWithNibName:name bundle:nil];
+  }
+  return _onboarding_5;
+}
+
+- (IIOnboardingViewController6*)onboarding_6
+{
+  if (!_onboarding_6)
+  {
+    NSString* name = NSStringFromClass(IIOnboardingViewController6.class);
+    _onboarding_6 = [[IIOnboardingViewController6 alloc] initWithNibName:name bundle:nil];
+    _onboarding_6.delegate = self;
+  }
+  return _onboarding_6;
+}
+
+#pragma mark - Error
+
+- (void)showErrorTitle:(NSString*)title
+               message:(NSString*)message
+{
+  NSAlert* alert = [NSAlert alertWithMessageText:title
+                                   defaultButton:NSLocalizedString(@"OK", nil)
+                                 alternateButton:nil 
+                                     otherButton:nil
+                       informativeTextWithFormat:@"%@", message];
+  [alert runModal];
+  exit(0);
 }
 
 @end
