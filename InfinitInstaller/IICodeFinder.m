@@ -48,8 +48,8 @@ static dispatch_once_t _instance_token = 0;
   {
     NSLog(@"Not in mounted volume");
 #ifndef DEBUG
-    NSString* title = NSLocalizedString(@"Launch the installer from the Disk Image", nil);
-    NSString* message = NSLocalizedString(@"Reopen the installer from the Disk Image you downloaded and launch it from there.", nil);
+    NSString* title = NSLocalizedString(@"Launch the installer from the disk image", nil);
+    NSString* message = NSLocalizedString(@"Reopen the disk image you downloaded and launch the installer directly from there. If you have any trouble, contact support@infinit.io.", nil);
     NSAlert* alert = [NSAlert alertWithMessageText:title
                                      defaultButton:NSLocalizedString(@"OK", nil)
                                    alternateButton:nil
