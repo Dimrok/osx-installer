@@ -34,6 +34,10 @@
                 </imageView>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y4D-YP-pm0">
                     <rect key="frame" x="68" y="247" width="286" height="75"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="282" id="StZ-aG-wwo"/>
+                        <constraint firstAttribute="height" constant="75" id="zLD-1P-iZV"/>
+                    </constraints>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Send files and folders of any size or format, from a complete photo collection, to a HD movie." id="qpz-Tq-a85">
                         <font key="font" size="16" name="SourceSansPro-Regular"/>
                         <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -66,6 +70,10 @@
                 </imageView>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zOh-Vw-8sK">
                     <rect key="frame" x="68" y="56" width="293" height="75"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="289" id="AB8-2q-i0d"/>
+                        <constraint firstAttribute="height" constant="75" id="SjX-cq-TSf"/>
+                    </constraints>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Up to 30 times faster than existing solutions thanks to a unique point-to-point technology." id="nNb-ql-jek">
                         <font key="font" size="16" name="SourceSansPro-Regular"/>
                         <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -86,6 +94,10 @@
                 </imageView>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vr9-yY-llF">
                     <rect key="frame" x="402" y="56" width="250" height="75"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="75" id="8Pc-QD-K6I"/>
+                        <constraint firstAttribute="width" constant="246" id="iul-7M-ZJU"/>
+                    </constraints>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Your files are protected from start to finish through bank-level encryption algorithms for maximum security." id="uwd-fM-M6x">
                         <font key="font" size="16" name="SourceSansPro-Regular"/>
                         <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -94,6 +106,10 @@
                 </textField>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gf4-TA-YEZ">
                     <rect key="frame" x="402" y="245" width="270" height="75"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="266" id="WWr-P2-l0R"/>
+                        <constraint firstAttribute="height" constant="75" id="xnz-cq-iYM"/>
+                    </constraints>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Disconnecting from the Internet will never stop your transfers, ensuring that your files are delivered no matter what." id="FLg-cI-gL2">
                         <font key="font" size="16" name="SourceSansPro-Regular"/>
                         <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
