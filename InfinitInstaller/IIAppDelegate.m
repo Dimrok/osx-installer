@@ -40,7 +40,7 @@
 @property (nonatomic, weak) IBOutlet NSButton* next_button;
 @property (nonatomic, weak) IBOutlet NSView* onboarding_view;
 @property (nonatomic, weak) IBOutlet IIOnboardingProgressView* progress_view;
-@property (nonatomic, weak) IBOutlet NSWindow* window;
+@property (nonatomic, unsafe_unretained) IBOutlet NSWindow* window;
 
 @property (nonatomic, strong) AFHTTPClient* client;
 @property (nonatomic, readonly) NSString* code;
