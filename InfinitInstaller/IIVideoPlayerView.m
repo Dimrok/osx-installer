@@ -10,12 +10,15 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-@implementation IIVideoPlayerView
-{
-  AVPlayer* _player;
-}
+@interface IIVideoPlayerView ()
 
-//- Initialisation ---------------------------------------------------------------------------------
+@property (nonatomic, readonly) AVPlayer* player;
+
+@end
+
+@implementation IIVideoPlayerView
+
+#pragma mark - Init
 
 - (id)initWithFrame:(NSRect)frameRect
 {
@@ -25,7 +28,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(videoFinished:)
                                                  name:AVPlayerItemDidPlayToEndTimeNotification
-                                               object:[_player currentItem]];
+                                               object:self.player.currentItem];
   }
   return self;
 }
@@ -33,39 +36,39 @@
 - (void)dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [_player pause];
+  [self.player pause];
 }
 
-//- Set URL ----------------------------------------------------------------------------------------
+#pragma mark - Set URL
 
 - (void)setUrl:(NSURL*)url
 {
   _url = url;
-  _player = [AVPlayer playerWithURL:_url];
+  _player = [AVPlayer playerWithURL:self.url];
   _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
   _player.muted = YES;
-  AVPlayerLayer* player_layer = [AVPlayerLayer playerLayerWithPlayer:_player];
+  AVPlayerLayer* player_layer = [AVPlayerLayer playerLayerWithPlayer:self.player];
   self.layer = player_layer;
 }
 
-//- Video Playback ---------------------------------------------------------------------------------
+#pragma mark - Playback
 
 - (void)play
 {
   _play_count = 0;
-  [_player play];
+  [self.player play];
 }
 
 - (void)pause
 {
-  [_player pause];
+  [self.player pause];
 }
 
 - (void)videoFinished:(NSNotification*)notification
 {
   _play_count += 1;
-  [_delegate finishedPlayOfVideo:self];
-  [_player seekToTime:kCMTimeZero];
+  [self.delegate finishedPlayOfVideo:self];
+  [self.player seekToTime:kCMTimeZero];
 }
 
 @end

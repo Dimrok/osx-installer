@@ -12,7 +12,7 @@
 
 @interface IIVideoPlayerView : NSView
 
-@property (nonatomic, readwrite, weak) id<IIVideoPlayerProtocol> delegate;
+@property (nonatomic, unsafe_unretained, readwrite) id<IIVideoPlayerProtocol> delegate;
 @property (nonatomic, readwrite) NSURL* url;
 @property (nonatomic, readonly) NSUInteger play_count;
 
