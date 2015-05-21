@@ -13,23 +13,28 @@
 #define INFINIT_METRICS_PROTOCOL @"http"
 #define INFINIT_METRICS_HOST @"metrics.9.0.api.production.infinit.io"
 #define INFINIT_METRICS_PORT 80
-//#define INFINIT_METRICS_HOST @"127.0.0.1"
+//#define INFINIT_METRICS_HOST @"192.168.0.14"
 //#define INFINIT_METRICS_PORT 8282
 #define INFINIT_METRICS_COLLECTION @"users"
 
-//#define INFINIT_NO_METRICS
+#ifdef DEBUG
+# define INFINIT_NO_METRICS
+#endif
 
 static IIMetricsReporter* _instance = nil;
+static dispatch_once_t _instance_token = 0;
+
+@interface IIMetricsReporter ()
+
+@property (nonatomic, readonly) NSURL* metrics_url;
+@property (nonatomic, readonly) NSDictionary* http_headers;
+@property (nonatomic, readonly) NSString* device_id;
+
+@end
 
 @implementation IIMetricsReporter
-{
-@private
-  NSURL* _metrics_url;
-  NSDictionary* _http_headers;
-  NSString* _device_id;
-}
 
-//- Initialisation ---------------------------------------------------------------------------------
+#pragma mark - Init
 
 - (id)init
 {
@@ -55,10 +60,14 @@ static IIMetricsReporter* _instance = nil;
 
 + (IIMetricsReporter*)sharedInstance
 {
-  if (_instance == nil)
+  dispatch_once(&_instance_token, ^
+  {
     _instance = [[IIMetricsReporter alloc] init];
+  });
   return _instance;
 }
+
+#pragma mark - Device ID
 
 + (void)setDeviceId:(NSString*)device_id
 {
@@ -70,7 +79,7 @@ static IIMetricsReporter* _instance = nil;
   _device_id = device_id;
 }
 
-//- Send Metric ------------------------------------------------------------------------------------
+#pragma mark - Send Metrics
 
 + (void)sendMetric:(InfinitMetricType)metric
 {
@@ -106,7 +115,7 @@ static IIMetricsReporter* _instance = nil;
   [connection start];
 }
 
-//- Helpers ----------------------------------------------------------------------------------------
+#pragma mark - Helpers
 
 - (NSString*)_eventName:(InfinitMetricType)metric
 {
@@ -170,7 +179,7 @@ static IIMetricsReporter* _instance = nil;
     return nil;
 }
 
-//- NSURLConnectionDelegate ------------------------------------------------------------------------
+#pragma mark - NSURLConnectionDelegate
 
 - (void)connection:(NSURLConnection*)connection
   didFailWithError:(NSError*)error
