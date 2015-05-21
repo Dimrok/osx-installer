@@ -87,13 +87,14 @@ static dispatch_once_t _first_load_token = 0;
 - (void)fetchProgress
 {
   double progress = [self.delegate currentDownloadProgress];
+  if (progress >= 1.0f)
+    self.info_label.stringValue = NSLocalizedString(@"Installing Infinit...", nil);
   if (self.progress_indicator.doubleValue == progress)
     return;
   if (progress >= 1.0f)
   {
     [self.timer invalidate];
     _timer = nil;
-    self.info_label.stringValue = NSLocalizedString(@"Installing Infinit...", nil);
     if (self.progress_indicator.doubleValue < 1.0f)
     {
       [NSAnimationContext runAnimationGroup:^(NSAnimationContext* context)
