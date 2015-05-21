@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="14A379a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E17e" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="5100" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -19,11 +19,10 @@
         </customObject>
         <customObject id="Voe-Tx-rLC" customClass="IIAppDelegate">
             <connections>
-                <outlet property="instruction_label" destination="JiP-SQ-KzW" id="ocq-Kl-rNK"/>
-                <outlet property="progress_bar" destination="tcw-G1-TBT" id="aTa-UT-6vK"/>
-                <outlet property="status_label" destination="fr0-cD-nxh" id="5wK-Sa-dBp"/>
-                <outlet property="tagline_label" destination="VM9-Wr-HmS" id="T6C-bc-RKR"/>
-                <outlet property="video_view" destination="O4W-ap-69v" id="Rm3-nO-lEy"/>
+                <outlet property="back_button" destination="hqI-m5-Cqh" id="i6N-Ig-qjt"/>
+                <outlet property="next_button" destination="lzc-Ws-QvM" id="E5p-qC-zCX"/>
+                <outlet property="onboarding_view" destination="Zui-yu-Apn" id="iqQ-QC-8hV"/>
+                <outlet property="progress_view" destination="Jbw-OK-idy" id="thV-MZ-U0a"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -49,54 +48,68 @@
         </menu>
         <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
-            <rect key="contentRect" x="517" y="410" width="852" height="488"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
-            <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="852" height="488"/>
+            <rect key="contentRect" x="517" y="410" width="740" height="630"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
+            <view key="contentView" id="EiT-Mj-1SZ" customClass="IIWhiteView">
+                <rect key="frame" x="0.0" y="0.0" width="740" height="630"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fr0-cD-nxh">
-                        <rect key="frame" x="41" y="82" width="247" height="20"/>
-                        <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Downloading..." id="wso-gA-SXR">
-                            <font key="font" size="13" name="HelveticaNeue"/>
-                            <color key="textColor" red="0.31764705882352939" green="0.31764705882352939" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <progressIndicator fixedFrame="YES" maxValue="1" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="tcw-G1-TBT">
-                        <rect key="frame" x="62" y="49" width="204" height="20"/>
-                    </progressIndicator>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c3G-uT-moB">
-                        <rect key="frame" x="70" y="352" width="188" height="93"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="logo" id="0n2-fY-kvD"/>
-                    </imageView>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VM9-Wr-HmS">
-                        <rect key="frame" x="56" y="277" width="217" height="30"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Welcome to Infinit" id="9M2-AG-hLW">
-                            <font key="font" size="13" name="HelveticaNeue-Light"/>
-                            <color key="textColor" red="0.31764705882352939" green="0.31764705882352939" blue="0.28235294117647058" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O4W-ap-69v" customClass="IIVideoPlayerView">
-                        <rect key="frame" x="327" y="0.0" width="525" height="488"/>
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="Zui-yu-Apn" customClass="IIWhiteView">
+                        <rect key="frame" x="0.0" y="80" width="740" height="550"/>
                     </customView>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JiP-SQ-KzW">
-                        <rect key="frame" x="51" y="168" width="226" height="60"/>
-                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" id="lfv-f3-pcm">
-                            <font key="font" size="20" name="HelveticaNeue-Light"/>
-                            <string key="title">Send any file with
-a quick drag and drop.</string>
-                            <color key="textColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="lzc-Ws-QvM">
+                        <rect key="frame" x="570" y="40" width="100" height="35"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="100" id="J55-jR-39w"/>
+                            <constraint firstAttribute="height" constant="35" id="OPb-wo-JZH"/>
+                        </constraints>
+                        <buttonCell key="cell" type="square" title="NEXT" bezelStyle="shadowlessSquare" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ght-iy-qya" customClass="IIOnboardingButtonCell">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="15" name="SourceSansPro-Semibold"/>
+                            <string key="keyEquivalent"></string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="nextClicked:" target="Voe-Tx-rLC" id="JKF-cW-uSL"/>
+                        </connections>
+                    </button>
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="hqI-m5-Cqh">
+                        <rect key="frame" x="70" y="40" width="100" height="35"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="35" id="H9V-N3-Kv4"/>
+                            <constraint firstAttribute="width" constant="100" id="zu8-oh-e3k"/>
+                        </constraints>
+                        <buttonCell key="cell" type="square" title="BACK" bezelStyle="shadowlessSquare" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="9Jt-TT-Gt4" customClass="IIOnboardingButtonCell">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="15" name="SourceSansPro-Semibold"/>
+                            <string key="keyEquivalent"></string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="backClicked:" target="Voe-Tx-rLC" id="gEI-6A-ast"/>
+                        </connections>
+                    </button>
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="Jbw-OK-idy" customClass="IIOnboardingProgressView">
+                        <rect key="frame" x="320" y="47" width="100" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="W2j-7O-omI"/>
+                            <constraint firstAttribute="width" constant="100" id="kkf-yz-YwD"/>
+                        </constraints>
+                    </customView>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="lzc-Ws-QvM" secondAttribute="bottom" constant="40" id="0cI-fQ-SQh"/>
+                    <constraint firstItem="Zui-yu-Apn" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="Bc4-eS-6Yw"/>
+                    <constraint firstItem="Zui-yu-Apn" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="PSC-0P-l1H"/>
+                    <constraint firstItem="Jbw-OK-idy" firstAttribute="centerY" secondItem="hqI-m5-Cqh" secondAttribute="centerY" id="SsE-bL-y8l"/>
+                    <constraint firstAttribute="centerX" secondItem="Jbw-OK-idy" secondAttribute="centerX" id="abo-MC-od0"/>
+                    <constraint firstAttribute="trailing" secondItem="lzc-Ws-QvM" secondAttribute="trailing" constant="70" id="d5V-gG-yxi"/>
+                    <constraint firstItem="hqI-m5-Cqh" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="70" id="jSV-eh-dTU"/>
+                    <constraint firstAttribute="bottom" secondItem="hqI-m5-Cqh" secondAttribute="bottom" constant="40" id="oK0-lV-ilP"/>
+                    <constraint firstItem="Jbw-OK-idy" firstAttribute="centerY" secondItem="hqI-m5-Cqh" secondAttribute="centerY" id="qpb-Y5-bFx"/>
+                    <constraint firstAttribute="trailing" secondItem="Zui-yu-Apn" secondAttribute="trailing" id="r0U-yh-8gx"/>
+                    <constraint firstAttribute="bottom" secondItem="Zui-yu-Apn" secondAttribute="bottom" constant="80" id="yYR-CM-yN7"/>
+                </constraints>
             </view>
-            <point key="canvasLocation" x="-89" y="55"/>
+            <point key="canvasLocation" x="-212" y="7"/>
         </window>
     </objects>
-    <resources>
-        <image name="logo" width="188" height="104"/>
-    </resources>
 </document>
