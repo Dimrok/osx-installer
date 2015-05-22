@@ -26,6 +26,7 @@ static NSColor* _bold_color = nil;
 {
   [super aboutToAnimate];
   [self.video_view pause];
+  [self.video_view restart];
 }
 
 - (void)finishedAnimate
@@ -38,6 +39,7 @@ static NSColor* _bold_color = nil;
 
 - (void)setVideo_url:(NSURL*)video_url
 {
+  _video_url = video_url;
   self.video_view.url = video_url;
 }
 
