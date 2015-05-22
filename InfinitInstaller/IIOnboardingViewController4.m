@@ -31,11 +31,9 @@ static dispatch_once_t _first_load_token = 0;
   dispatch_once(&_first_load_token, ^
   {
     self.top_label.stringValue = NSLocalizedString(@"Receive from Infinit users", nil);
-    self.top_info.stringValue = NSLocalizedString(@"Receiving files with one click. Just open Infinit and click the ‘Accept’ button to start the transfer. You’ll even be notified when the files are available.", nil);
-    self.bottom_info.stringValue = @"";
-    [self boldLabel:self.top_info string:NSLocalizedString(@"Receiving", nil)];
+    self.top_info.stringValue = NSLocalizedString(@"Receiving files with one click. Just open Infinit and click the ‘Accept’ button to start the transfer.", nil);
+    self.bottom_info.stringValue = NSLocalizedString(@"You’ll even be notified when the files are available.", nil);
     [self boldLabel:self.top_info string:NSLocalizedString(@"click the ‘Accept’ button", nil)];
-    [self boldLabel:self.top_info string:NSLocalizedString(@"notified", nil)];
     self.video_url = [[NSBundle mainBundle] URLForResource:@"accept" withExtension:@"mp4"];
   });
 }
