@@ -537,7 +537,7 @@
 {
   if (!_onboarding_5)
   {
-    NSString* name = NSStringFromClass(IIOnboardingVideoAbstractViewController.class);
+    NSString* name = NSStringFromClass(IIOnboardingViewController5.class);
     _onboarding_5 = [[IIOnboardingViewController5 alloc] initWithNibName:name bundle:nil];
   }
   return _onboarding_5;
