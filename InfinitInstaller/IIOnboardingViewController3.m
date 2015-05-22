@@ -34,8 +34,7 @@ static dispatch_once_t _first_load_token = 0;
     self.top_info.stringValue = NSLocalizedString(@"With your friends on Infinit, you can send files and folders of any size for free without having to enter an email address.", nil);
     self.bottom_info.stringValue = NSLocalizedString(@"Oh, and it’s super secure and way faster than services like email, Dropbox, WeTransfer etc.", nil);
     [self boldLabel:self.top_info string:NSLocalizedString(@"any size for free", nil)];
-    [self boldLabel:self.bottom_info string:NSLocalizedString(@"super secure", nil)];
-    [self boldLabel:self.bottom_info string:NSLocalizedString(@"way faster", nil)];
+    [self boldLabel:self.bottom_info string:NSLocalizedString(@"super secure and way faster", nil)];
     self.video_url = [[NSBundle mainBundle] URLForResource:@"send-contact" withExtension:@"mp4"];
   });
 }
