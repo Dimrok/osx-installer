@@ -22,9 +22,6 @@
 		0B3250FC18EB61BD00D0A1CC /* NTSynchronousTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3250FB18EB61BD00D0A1CC /* NTSynchronousTask.m */; };
 		0B3250FF18EB68E900D0A1CC /* SUCodeSigningVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3250FE18EB68E900D0A1CC /* SUCodeSigningVerifier.m */; };
 		1AC14D207D8042D5A2432A0B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B64E0B1C0C94831B14CE84E /* libPods.a */; };
-		830836EB1B0DE9CD0095B76B /* send-contact.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 830836EA1B0DE9CD0095B76B /* send-contact.mp4 */; };
-		830836ED1B0DEA030095B76B /* send-device.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 830836EC1B0DEA030095B76B /* send-device.mp4 */; };
-		830836EF1B0DEA160095B76B /* accept.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 830836EE1B0DEA160095B76B /* accept.mp4 */; };
 		830836F31B0DF75D0095B76B /* IIOnboardingViewController6.m in Sources */ = {isa = PBXBuildFile; fileRef = 830836F11B0DF75D0095B76B /* IIOnboardingViewController6.m */; };
 		830836F41B0DF75D0095B76B /* IIOnboardingViewController6.xib in Resources */ = {isa = PBXBuildFile; fileRef = 830836F21B0DF75D0095B76B /* IIOnboardingViewController6.xib */; };
 		830837011B0DF93A0095B76B /* onboarding-icon-android.png in Resources */ = {isa = PBXBuildFile; fileRef = 830836F71B0DF93A0095B76B /* onboarding-icon-android.png */; };
@@ -76,17 +73,20 @@
 		8375C0C21B0CC56500AE439F /* IIOnboardingViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 8375C0C01B0CC56500AE439F /* IIOnboardingViewController2.m */; };
 		8375C0C61B0CD12E00AE439F /* IIBlackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8375C0C51B0CD12E00AE439F /* IIBlackView.m */; };
 		8375C0C91B0CD29D00AE439F /* IIBorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8375C0C81B0CD29D00AE439F /* IIBorderView.m */; };
-		8375C0CB1B0CD8BC00AE439F /* send-email.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8375C0CA1B0CD8BC00AE439F /* send-email.mp4 */; };
 		8375C0CF1B0CDE2500AE439F /* IIOnboardingViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 8375C0CD1B0CDE2500AE439F /* IIOnboardingViewController3.m */; };
 		8375C0D41B0CDE3100AE439F /* IIOnboardingViewController4.m in Sources */ = {isa = PBXBuildFile; fileRef = 8375C0D21B0CDE3100AE439F /* IIOnboardingViewController4.m */; };
 		8375C0D91B0CDE3E00AE439F /* IIOnboardingViewController5.m in Sources */ = {isa = PBXBuildFile; fileRef = 8375C0D71B0CDE3E00AE439F /* IIOnboardingViewController5.m */; };
 		8375C0DE1B0CE73400AE439F /* IIOnboardingVideoAbstractViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8375C0DC1B0CE73400AE439F /* IIOnboardingVideoAbstractViewController.m */; };
 		8375C0DF1B0CE73400AE439F /* IIOnboardingVideoAbstractViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8375C0DD1B0CE73400AE439F /* IIOnboardingVideoAbstractViewController.xib */; };
+		8384A2F61B0E3F7400AC836F /* IIOnboardingViewController5.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8384A2F51B0E3F7400AC836F /* IIOnboardingViewController5.xib */; };
+		8384A3061B0F12A100AC836F /* accept.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8384A3021B0F12A100AC836F /* accept.mp4 */; };
+		8384A3071B0F12A100AC836F /* send-contact.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8384A3031B0F12A100AC836F /* send-contact.mp4 */; };
+		8384A3081B0F12A100AC836F /* send-device.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8384A3041B0F12A100AC836F /* send-device.mp4 */; };
+		8384A3091B0F12A100AC836F /* send-email.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8384A3051B0F12A100AC836F /* send-email.mp4 */; };
 		838F35A519D0011A00C3DA3C /* sound_finished.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 838F35A219D0011A00C3DA3C /* sound_finished.aiff */; };
 		838F35A619D0011A00C3DA3C /* sound_incoming.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 838F35A319D0011A00C3DA3C /* sound_incoming.aiff */; };
 		838F35A719D0011A00C3DA3C /* sound_sent.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 838F35A419D0011A00C3DA3C /* sound_sent.aiff */; };
 		83B919DF19C8808C00B08CA2 /* IIMetricsReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B919DE19C8808C00B08CA2 /* IIMetricsReporter.m */; };
-		83B919F219C96B2B00B08CA2 /* IIPacman.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B919F119C96B2B00B08CA2 /* IIPacman.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -157,9 +157,6 @@
 		4CD696C47E8EE26166D7FFB8 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		6B64E0B1C0C94831B14CE84E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B7DB0158A4A81570BEF9DDC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		830836EA1B0DE9CD0095B76B /* send-contact.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "send-contact.mp4"; path = "../../../fist-resources/gifs/mac/send-contact.mp4"; sourceTree = "<group>"; };
-		830836EC1B0DEA030095B76B /* send-device.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "send-device.mp4"; path = "../../../fist-resources/gifs/mac/send-device.mp4"; sourceTree = "<group>"; };
-		830836EE1B0DEA160095B76B /* accept.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = accept.mp4; path = "../../../fist-resources/gifs/mac/accept.mp4"; sourceTree = "<group>"; };
 		830836F01B0DF75D0095B76B /* IIOnboardingViewController6.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIOnboardingViewController6.h; sourceTree = "<group>"; };
 		830836F11B0DF75D0095B76B /* IIOnboardingViewController6.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIOnboardingViewController6.m; sourceTree = "<group>"; };
 		830836F21B0DF75D0095B76B /* IIOnboardingViewController6.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IIOnboardingViewController6.xib; sourceTree = "<group>"; };
@@ -223,7 +220,6 @@
 		8375C0C51B0CD12E00AE439F /* IIBlackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIBlackView.m; sourceTree = "<group>"; };
 		8375C0C71B0CD29D00AE439F /* IIBorderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIBorderView.h; sourceTree = "<group>"; };
 		8375C0C81B0CD29D00AE439F /* IIBorderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIBorderView.m; sourceTree = "<group>"; };
-		8375C0CA1B0CD8BC00AE439F /* send-email.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "send-email.mp4"; path = "../../../fist-resources/gifs/mac/send-email.mp4"; sourceTree = "<group>"; };
 		8375C0CC1B0CDE2500AE439F /* IIOnboardingViewController3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIOnboardingViewController3.h; sourceTree = "<group>"; };
 		8375C0CD1B0CDE2500AE439F /* IIOnboardingViewController3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIOnboardingViewController3.m; sourceTree = "<group>"; };
 		8375C0D11B0CDE3100AE439F /* IIOnboardingViewController4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIOnboardingViewController4.h; sourceTree = "<group>"; };
@@ -235,13 +231,16 @@
 		8375C0DD1B0CE73400AE439F /* IIOnboardingVideoAbstractViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IIOnboardingVideoAbstractViewController.xib; sourceTree = "<group>"; };
 		8375C0E21B0CF14800AE439F /* SourceSansPro-It.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceSansPro-It.otf"; path = "../../../fist-resources/fonts/SourceSansPro-It.otf"; sourceTree = "<group>"; };
 		83849C8419CB2B8E00AE9845 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		8384A2F51B0E3F7400AC836F /* IIOnboardingViewController5.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IIOnboardingViewController5.xib; sourceTree = "<group>"; };
+		8384A3021B0F12A100AC836F /* accept.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = accept.mp4; path = "../../../fist-resources/gifs/mac/accept.mp4"; sourceTree = "<group>"; };
+		8384A3031B0F12A100AC836F /* send-contact.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "send-contact.mp4"; path = "../../../fist-resources/gifs/mac/send-contact.mp4"; sourceTree = "<group>"; };
+		8384A3041B0F12A100AC836F /* send-device.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "send-device.mp4"; path = "../../../fist-resources/gifs/mac/send-device.mp4"; sourceTree = "<group>"; };
+		8384A3051B0F12A100AC836F /* send-email.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "send-email.mp4"; path = "../../../fist-resources/gifs/mac/send-email.mp4"; sourceTree = "<group>"; };
 		838F35A219D0011A00C3DA3C /* sound_finished.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = sound_finished.aiff; path = "../../../fist-resources/sounds/sound_finished.aiff"; sourceTree = "<group>"; };
 		838F35A319D0011A00C3DA3C /* sound_incoming.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = sound_incoming.aiff; path = "../../../fist-resources/sounds/sound_incoming.aiff"; sourceTree = "<group>"; };
 		838F35A419D0011A00C3DA3C /* sound_sent.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = sound_sent.aiff; path = "../../../fist-resources/sounds/sound_sent.aiff"; sourceTree = "<group>"; };
 		83B919DD19C8808C00B08CA2 /* IIMetricsReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIMetricsReporter.h; sourceTree = "<group>"; };
 		83B919DE19C8808C00B08CA2 /* IIMetricsReporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIMetricsReporter.m; sourceTree = "<group>"; };
-		83B919F019C96B2B00B08CA2 /* IIPacman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIPacman.h; sourceTree = "<group>"; };
-		83B919F119C96B2B00B08CA2 /* IIPacman.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIPacman.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -320,7 +319,6 @@
 				833B239319DAAFD300D3F104 /* Video Player */,
 				83B919ED19C96ADC00B08CA2 /* Metrics */,
 				0B3250F018EB615500D0A1CC /* Sparkle */,
-				83B919EF19C96AFA00B08CA2 /* Pacman */,
 				8375C0741B0CA4F400AE439F /* Onboarding */,
 				0B32505518EA031500D0A1CC /* IIAppDelegate.h */,
 				0B32505618EA031500D0A1CC /* IIAppDelegate.m */,
@@ -433,6 +431,7 @@
 				8375C0D21B0CDE3100AE439F /* IIOnboardingViewController4.m */,
 				8375C0D61B0CDE3E00AE439F /* IIOnboardingViewController5.h */,
 				8375C0D71B0CDE3E00AE439F /* IIOnboardingViewController5.m */,
+				8384A2F51B0E3F7400AC836F /* IIOnboardingViewController5.xib */,
 				830836F01B0DF75D0095B76B /* IIOnboardingViewController6.h */,
 				830836F11B0DF75D0095B76B /* IIOnboardingViewController6.m */,
 				830836F21B0DF75D0095B76B /* IIOnboardingViewController6.xib */,
@@ -443,6 +442,10 @@
 		8375C08D1B0CAE9300AE439F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8384A3021B0F12A100AC836F /* accept.mp4 */,
+				8384A3031B0F12A100AC836F /* send-contact.mp4 */,
+				8384A3041B0F12A100AC836F /* send-device.mp4 */,
+				8384A3051B0F12A100AC836F /* send-email.mp4 */,
 				830837091B0DFA7F0095B76B /* onboarding-icon-android-hover.png */,
 				8308370A1B0DFA7F0095B76B /* onboarding-icon-android-hover@2x.png */,
 				8308370B1B0DFA7F0095B76B /* onboarding-icon-apple-hover.png */,
@@ -459,10 +462,6 @@
 				830836FC1B0DF93A0095B76B /* onboarding-icon-ios@2x.png */,
 				830836FD1B0DF93A0095B76B /* onboarding-icon-windows.png */,
 				830836FE1B0DF93A0095B76B /* onboarding-icon-windows@2x.png */,
-				830836EE1B0DEA160095B76B /* accept.mp4 */,
-				830836EC1B0DEA030095B76B /* send-device.mp4 */,
-				830836EA1B0DE9CD0095B76B /* send-contact.mp4 */,
-				8375C0CA1B0CD8BC00AE439F /* send-email.mp4 */,
 				8375C0B91B0CBC2300AE439F /* onboarding-logo.png */,
 				8375C0BA1B0CBC2300AE439F /* onboarding-logo@2x.png */,
 				8375C0A61B0CBA9400AE439F /* onboarding-icon-fast.png */,
@@ -499,15 +498,6 @@
 				83B919DE19C8808C00B08CA2 /* IIMetricsReporter.m */,
 			);
 			name = Metrics;
-			sourceTree = "<group>";
-		};
-		83B919EF19C96AFA00B08CA2 /* Pacman */ = {
-			isa = PBXGroup;
-			children = (
-				83B919F019C96B2B00B08CA2 /* IIPacman.h */,
-				83B919F119C96B2B00B08CA2 /* IIPacman.m */,
-			);
-			name = Pacman;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -595,14 +585,16 @@
 				830837021B0DF93A0095B76B /* onboarding-icon-android@2x.png in Resources */,
 				830837151B0DFA7F0095B76B /* onboarding-icon-ios-hover.png in Resources */,
 				830837171B0DFA7F0095B76B /* onboarding-icon-windows-hover.png in Resources */,
+				8384A3081B0F12A100AC836F /* send-device.mp4 in Resources */,
 				0B3250E718EB4F6600D0A1CC /* MainMenu.xib in Resources */,
+				8384A2F61B0E3F7400AC836F /* IIOnboardingViewController5.xib in Resources */,
 				838F35A719D0011A00C3DA3C /* sound_sent.aiff in Resources */,
-				830836EF1B0DEA160095B76B /* accept.mp4 in Resources */,
 				830837141B0DFA7F0095B76B /* onboarding-icon-apple-hover@2x.png in Resources */,
 				8375C0BC1B0CBC2300AE439F /* onboarding-logo@2x.png in Resources */,
 				830837041B0DF93A0095B76B /* onboarding-icon-apple@2x.png in Resources */,
 				830837131B0DFA7F0095B76B /* onboarding-icon-apple-hover.png in Resources */,
 				830837121B0DFA7F0095B76B /* onboarding-icon-android-hover@2x.png in Resources */,
+				8384A3061B0F12A100AC836F /* accept.mp4 in Resources */,
 				0B32504E18EA031500D0A1CC /* InfoPlist.strings in Resources */,
 				830837081B0DF93A0095B76B /* onboarding-icon-windows@2x.png in Resources */,
 				830837111B0DFA7F0095B76B /* onboarding-icon-android-hover.png in Resources */,
@@ -620,11 +612,10 @@
 				8375C0B21B0CBA9400AE439F /* onboarding-icon-secure.png in Resources */,
 				836491E819DB123F004F911D /* icon.icns in Resources */,
 				830837161B0DFA7F0095B76B /* onboarding-icon-ios-hover@2x.png in Resources */,
+				8384A3091B0F12A100AC836F /* send-email.mp4 in Resources */,
+				8384A3071B0F12A100AC836F /* send-contact.mp4 in Resources */,
 				8375C0BB1B0CBC2300AE439F /* onboarding-logo.png in Resources */,
 				8375C0B01B0CBA9400AE439F /* onboarding-icon-nolimits.png in Resources */,
-				830836EB1B0DE9CD0095B76B /* send-contact.mp4 in Resources */,
-				8375C0CB1B0CD8BC00AE439F /* send-email.mp4 in Resources */,
-				830836ED1B0DEA030095B76B /* send-device.mp4 in Resources */,
 				8375C0B51B0CBA9400AE439F /* onboarding-icon-unstoppable@2x.png in Resources */,
 				838F35A519D0011A00C3DA3C /* sound_finished.aiff in Resources */,
 				0B32505418EA031500D0A1CC /* Credits.rtf in Resources */,
@@ -705,7 +696,6 @@
 				83457E9D1B03A32A00B7C135 /* IICodeFinder.m in Sources */,
 				8375C0B81B0CBAEA00AE439F /* IIWhiteView.m in Sources */,
 				8308371E1B0E0A9D0095B76B /* IIProgressIndicator.m in Sources */,
-				83B919F219C96B2B00B08CA2 /* IIPacman.m in Sources */,
 				8375C0DE1B0CE73400AE439F /* IIOnboardingVideoAbstractViewController.m in Sources */,
 				8375C0CF1B0CDE2500AE439F /* IIOnboardingViewController3.m in Sources */,
 			);
