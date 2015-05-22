@@ -13,25 +13,13 @@
 @interface IIVideoPlayerView ()
 
 @property (nonatomic, readonly) AVPlayer* player;
+@property (nonatomic, readonly) dispatch_once_t init_token;
 
 @end
 
 @implementation IIVideoPlayerView
 
 #pragma mark - Init
-
-- (id)initWithFrame:(NSRect)frameRect
-{
-  if (self = [super initWithFrame:frameRect])
-  {
-    self.wantsLayer = YES;
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(videoFinished:)
-                                                 name:AVPlayerItemDidPlayToEndTimeNotification
-                                               object:self.player.currentItem];
-  }
-  return self;
-}
 
 - (void)dealloc
 {
@@ -43,12 +31,23 @@
 
 - (void)setUrl:(NSURL*)url
 {
+  dispatch_once(&_init_token, ^
+  {
+    self.wantsLayer = YES;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(videoFinished:)
+                                                 name:AVPlayerItemDidPlayToEndTimeNotification
+                                               object:nil];
+  });
+  for (CALayer* layer in self.layer.sublayers)
+    [layer removeFromSuperlayer];
   _url = url;
   _player = [AVPlayer playerWithURL:self.url];
   _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
   _player.muted = YES;
   AVPlayerLayer* player_layer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-  self.layer = player_layer;
+  player_layer.frame = self.layer.bounds;
+  [self.layer addSublayer:player_layer];
 }
 
 #pragma mark - Playback
@@ -62,6 +61,11 @@
 - (void)pause
 {
   [self.player pause];
+}
+
+- (void)restart
+{
+  [self.player seekToTime:kCMTimeZero];
 }
 
 - (void)videoFinished:(NSNotification*)notification
