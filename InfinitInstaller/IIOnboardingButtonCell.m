@@ -40,6 +40,23 @@ static NSColor* _h_color = nil;
     [_h_color set];
     [bg fill];
   }
+  else
+  {
+    [self drawBezelWithFrame:cellFrame inView:controlView];
+    [self drawTitle:self.attributedTitle withFrame:cellFrame inView:controlView];
+  }
+}
+
+- (NSRect)drawTitle:(NSAttributedString*)title
+          withFrame:(NSRect)frame
+             inView:(NSView*)controlView
+{
+  NSSize text_size = title.size;
+  NSRect title_rect = NSMakeRect(floor((NSWidth(controlView.bounds) - text_size.width) / 2.0f),
+                                 floor((NSHeight(controlView.bounds) - text_size.height) / 2.0f) - 1.0f,
+                                 text_size.width, text_size.height);
+  [title drawInRect:title_rect];
+  return title_rect;
 }
 
 @end
