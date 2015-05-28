@@ -24,7 +24,6 @@
 - (void)dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [self.player pause];
 }
 
 #pragma mark - Set URL
