@@ -23,7 +23,7 @@
 
 #import "SUCodeSigningVerifier.h"
 
-#define INFINIT_BASE_URL @"http://download.infinit.io"
+#define INFINIT_BASE_URL @"https://download.infinit.io/macosx/app"
 #define INFINIT_APP_NAME @"Infinit.app"
 #define INFINIT_FINISHER_PATH @"InfinitInstallFinisher.app/Contents/MacOS/InfinitInstallFinisher"
 #define INFINIT_BUNDLE_IDENTIFIER @"io.infinit.InfinitApplication"
@@ -94,6 +94,13 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification*)aNotification
 {
+  self.window.alphaValue = 0.0f;
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(150 * NSEC_PER_MSEC)),
+                 dispatch_get_main_queue(), ^
+  {
+    [self.window center];
+    self.window.alphaValue = 1.0f;
+  });
   NSColor* text_color = [NSColor whiteColor];
   NSMutableAttributedString* back_str = [self.back_button.attributedTitle mutableCopy];
   [back_str addAttribute:NSForegroundColorAttributeName
