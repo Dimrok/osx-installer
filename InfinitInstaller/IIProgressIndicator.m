@@ -18,6 +18,8 @@ static NSColor* _fill_color = nil;
 
 @implementation IIProgressIndicator
 
+@synthesize doubleValue = _doubleValue;
+
 - (void)drawRect:(NSRect)dirtyRect
 {
   NSRect outline_rect = NSMakeRect(0.0f, 0.0f, self.bounds.size.width, 11.0f);
@@ -39,6 +41,12 @@ static NSColor* _fill_color = nil;
     _fill_color = [InfinitColor colorWithRed:43 green:190 blue:189];
   [_fill_color set];
   [fill fill];
+}
+
+- (void)setDoubleValue:(double)doubleValue
+{
+  _doubleValue = doubleValue;
+  [self setNeedsDisplay:YES];
 }
 
 + (id)defaultAnimationForKey:(NSString*)key
